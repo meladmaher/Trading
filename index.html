@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> —ÌœÃ ÃÊ—‰·</title>
+    <style>
+        body {
+            font-family: 'Cairo', 'Arial', sans-serif;
+            direction: rtl;
+            background-color: #f1f1f1;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+            align-items: center;
+        }
+
+        form > div {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        label {
+            font-weight: bold;
+            color: #333;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input, select, textarea {
+            padding: 12px;
+            font-size: 16px;
+            width: 100%;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: #4CAF50;
+            outline: none;
+        }
+
+        button {
+            padding: 12px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        table th, table td {
+            padding: 15px;
+            text-align: center;
+            border: 1px solid #ddd;
+            font-size: 16px;
+        }
+
+        table th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        table tr.editing {
+            background-color: #faebd7;
+        }
+
+        button.delete, button.edit {
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+
+        button.delete {
+            background-color: #f44336;
+            color: white;
+        }
+
+        button.delete:hover {
+            background-color: #e53935;
+        }
+
+        button.edit {
+            background-color: #2196F3;
+            color: white;
+        }
+
+        button.edit:hover {
+            background-color: #1976D2;
+        }
+
+        .slider {
+            margin-top: 10px;
+        }
+
+        .image-preview {
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .image-preview:hover {
+            transform: scale(1.1);
+        }
+
+        #image-modal {
+            width: 115%;
+            height: 73%;
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            z-index: 1000;
+        }
+
+        #image-modal img {
+            max-width: 80%;
+            max-height: 80vh;
+            display: block;
+            margin: auto;
+        }
+
+        #image-modal button {
+            display: block;
+            margin: 20px auto 0;
+            padding: 10px 20px;
+            background-color: white;
+            color: black;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1> —ÌœÃ ÃÊ—‰·</h1>
+
+        <form id="add-trade-form">
+            <div>
+                <label for="symbol">—„“ «·“ÊÃ «·„«·Ì:</label>
+                <select id="symbol">
+                    <option value="GOLD">GOLD</option>
+                    <option value="EURUSD">EURUSD</option>
+                    <option value="USDJPY">USDJPY</option>
+                    <option value="GBPUSD">GBPUSD</option>
+                    <option value="AUDUSD">AUDUSD</option>
+                    <option value="USDCAD">USDCAD</option>
+                    <option value="USDCHF">USDCHF</option>
+                </select>
+            </div>
+            <div>
+                <label for="custom-symbol">√Ê √œŒ· «”„ “ÊÃ ÃœÌœ:</label>
+                <input type="text" id="custom-symbol" placeholder="«œŒ· «”„ «·“ÊÃ «·ÃœÌœ">
+            </div>
+            <div>
+                <label for="action">«·⁄„·Ì…:</label>
+                <select id="action">
+                    <option value="Buy">Buy</option>
+                    <option value="Sell">Sell</option>
+                </select>
+            </div>
+            <div>
+                <label for="details">«· ›«’Ì·:</label>
+                <textarea id="details" placeholder="√œŒ·  ›«’Ì· «·’›ﬁ…"></textarea>
+            </div>
+            <div>
+                <label for="before-entry-image">’Ê—… ﬁ»· «·œŒÊ·:</label>
+                <input type="file" id="before-entry-image" accept="image/*">
+            </div>
+            <div>
+                <label for="after-entry-image">’Ê—… »⁄œ «·œŒÊ·:</label>
+                <input type="file" id="after-entry-image" accept="image/*">
+            </div>
+            <button type="submit">≈÷«›… ’›ﬁ…</button>
+        </form>
+
+        <h2>«·’›ﬁ«  «·„”Ã·…:</h2>
+        <table id="trade-table">
+            <thead>
+                <tr>
+                    <th>«·—„“</th>
+                    <th>«·⁄„·Ì…</th>
+                    <th>«· ›«’Ì·</th>
+                    <th>’Ê—… ﬁ»· «·œŒÊ·</th>
+                    <th>’Ê—… »⁄œ «·œŒÊ·</th>
+                    <th>«·≈Ã—«¡</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <div id="image-modal">
+        <img id="modal-img" src="" alt="">
+        <button onclick="closeModal()">≈€·«ﬁ</button>
+    </div>
+
+    <script>
+        const form = document.getElementById('add-trade-form');
+        const tradeTable = document.getElementById('trade-table').querySelector('tbody');
+        let editingRow = null;
+
+        form.addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const symbolSelect = document.getElementById('symbol').value;
+            const customSymbolInput = document.getElementById('custom-symbol').value.trim();
+            const action = document.getElementById('action').value;
+            const details = document.getElementById('details').value.trim();
+            const beforeEntryImage = document.getElementById('before-entry-image').files[0];
+            const afterEntryImage = document.getElementById('after-entry-image').files[0];
+
+            const symbol = customSymbolInput || symbolSelect;
+
+            if (!symbol) {
+                alert('Ì—ÃÏ ≈œŒ«· —„“ «·“ÊÃ «·„«·Ì.');
+                return;
+            }
+
+            const beforeImageUrl = beforeEntryImage ? await convertToBase64(beforeEntryImage) : '';
+            const afterImageUrl = afterEntryImage ? await convertToBase64(afterEntryImage) : '';
+
+            if (editingRow) {
+                updateRow(editingRow, symbol, action, details, beforeImageUrl, afterImageUrl);
+                editingRow.classList.remove('editing');
+                editingRow = null;
+            } else {
+                const row = document.createElement('tr');
+                addRow(row, symbol, action, details, beforeImageUrl, afterImageUrl);
+                tradeTable.appendChild(row);
+            }
+
+            saveToLocalStorage();
+            form.reset();
+        });
+
+        function convertToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onloadend = function() {
+                    resolve(reader.result);
+                };
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function addRow(row, symbol, action, details, beforeImageUrl, afterImageUrl) {
+            row.innerHTML = `
+                <td>${symbol}</td>
+                <td>${action}</td>
+                <td>${details || '·«  ÊÃœ  ›«’Ì·'}</td>
+                <td>${beforeImageUrl ? `<img src="${beforeImageUrl}" alt="’Ê—… ﬁ»· «·œŒÊ·" class="image-preview" style="width: 100px; height: auto;">` : '·«  ÊÃœ ’Ê—…'}</td>
+                <td>${afterImageUrl ? `<img src="${afterImageUrl}" alt="’Ê—… »⁄œ «·œŒÊ·" class="image-preview" style="width: 100px; height: auto;">` : '·«  ÊÃœ ’Ê—…'}</td>
+                <td>
+                    <button class="edit"> ⁄œÌ·</button>
+                    <button class="delete">Õ–›</button>
+                </td>
+            `;
+
+            row.querySelector('.delete').addEventListener('click', function() {
+                row.remove();
+                saveToLocalStorage();
+            });
+
+            row.querySelector('.edit').addEventListener('click', function() {
+                editRow(row);
+            });
+
+            row.querySelectorAll('.image-preview').forEach(img => {
+                img.addEventListener('click', function() {
+                    showModal(img.src);
+                });
+            });
+        }
+
+        function updateRow(row, symbol, action, details, beforeImageUrl, afterImageUrl) {
+            row.innerHTML = `
+                <td>${symbol}</td>
+                <td>${action}</td>
+                <td>${details || '·«  ÊÃœ  ›«’Ì·'}</td>
+                <td>${beforeImageUrl ? `<img src="${beforeImageUrl}" alt="’Ê—… ﬁ»· «·œŒÊ·" class="image-preview" style="width: 100px; height: auto;">` : '·«  ÊÃœ ’Ê—…'}</td>
+                <td>${afterImageUrl ? `<img src="${afterImageUrl}" alt="’Ê—… »⁄œ «·œŒÊ·" class="image-preview" style="width: 100px; height: auto;">` : '·«  ÊÃœ ’Ê—…'}</td>
+                <td>
+                    <button class="edit"> ⁄œÌ·</button>
+                    <button class="delete">Õ–›</button>
+                </td>
+            `;
+
+            row.querySelector('.delete').addEventListener('click', function() {
+                row.remove();
+                saveToLocalStorage();
+            });
+
+            row.querySelector('.edit').addEventListener('click', function() {
+                editRow(row);
+            });
+
+            row.querySelectorAll('.image-preview').forEach(img => {
+                img.addEventListener('click', function() {
+                    showModal(img.src);
+                });
+            });
+        }
+
+        function editRow(row) {
+            const cells = row.querySelectorAll('td');
+            document.getElementById('symbol').value = cells[0].textContent;
+            document.getElementById('action').value = cells[1].textContent;
+            document.getElementById('details').value = cells[2].textContent;
+            row.classList.add('editing');
+            editingRow = row;
+        }
+
+        function showModal(src) {
+            const modal = document.getElementById('image-modal');
+            const modalImg = document.getElementById('modal-img');
+            modalImg.src = src;
+            modal.style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('image-modal').style.display = 'none';
+        }
+
+        function saveToLocalStorage() {
+            const rows = tradeTable.querySelectorAll('tr');
+            const trades = Array.from(rows).map(row => {
+                const cells = row.querySelectorAll('td');
+                const beforeImg = row.querySelector('td:nth-child(4) img');
+                const afterImg = row.querySelector('td:nth-child(5) img');
+                return {
+                    symbol: cells[0].textContent,
+                    action: cells[1].textContent,
+                    details: cells[2].textContent,
+                    beforeImage: beforeImg ? beforeImg.src : '',
+                    afterImage: afterImg ? afterImg.src : ''
+                };
+            });
+            localStorage.setItem('trades', JSON.stringify(trades));
+        }
+
+        function loadFromLocalStorage() {
+            const trades = JSON.parse(localStorage.getItem('trades') || '[]');
+            trades.forEach(trade => {
+                const row = document.createElement('tr');
+                addRow(row, trade.symbol, trade.action, trade.details, trade.beforeImage, trade.afterImage);
+                tradeTable.appendChild(row);
+            });
+        }
+
+        window.onload = loadFromLocalStorage;
+    </script>
+</body>
+</html>
