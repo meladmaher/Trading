@@ -1,436 +1,539 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>تريدج جورنل</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تريدج جورنال</title>
     <style>
-        body {
-            font-family: 'Cairo', 'Arial', sans-serif;
-            direction: rtl;
-            background-color: #f1f1f1;
+        /* أنماط عامة */
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
 
+        body {
+            font-family: 'Cairo', Arial, sans-serif;
+            background-color: #f1f1f1;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
         .container {
-            width: 90%; /* Adjusted width for mobile devices */
+            background: white;
             max-width: 1200px;
-            margin: 40px auto;
-            padding: 20px; /* Reduced padding */
-            background-color: #ffffff;
+            margin: 10px auto;
+            padding: 15px;
             border-radius: 10px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
         h1 {
             text-align: center;
-            color: #333;
-            font-size: 28px; /* Adjusted for mobile devices */
-            margin-bottom: 15px;
+            color: #2c3e50;
+            margin: 15px 0;
+            font-size: 1.6em;
         }
 
+        /* أنماط الفورم */
         form {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
             margin-bottom: 20px;
-            align-items: center;
         }
 
-        form > div {
-            flex: 1;
-            min-width: 200px;
-        }
-
-        label {
-            font-weight: bold;
-            color: #333;
-            display: block;
-            margin-bottom: 5px;
+        .form-group {
+            display: flex;
+            flex-direction: column;
         }
 
         input, select, textarea {
-            padding: 12px;
-            font-size: 16px;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            margin-top: 4px;
             width: 100%;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-
-        input:focus, select:focus, textarea:focus {
-            border-color: #4CAF50;
-            outline: none;
         }
 
         button {
-            padding: 12px;
-            font-size: 16px;
-            background-color: #4CAF50;
+            background: #27ae60;
             color: white;
+            padding: 10px 20px;
             border: none;
+            border-radius: 6px;
             cursor: pointer;
-            border-radius: 8px;
-            transition: background-color 0.3s ease;
+            font-size: 14px;
+            transition: all 0.3s;
         }
 
         button:hover {
-            background-color: #45a049;
+            background: #219a52;
+            transform: translateY(-1px);
+        }
+
+        .file-input-label {
+            background: #3498db;
+            text-align: center;
+            padding: 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            color: white;
+            transition: all 0.3s;
+        }
+
+        .file-input-label:hover {
+            background: #2980b9;
+        }
+
+        /* الجدول */
+        .table-container {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         table {
             width: 100%;
-            margin-top: 20px;
             border-collapse: collapse;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            min-width: 600px;
         }
 
-        table th, table td {
-            padding: 10px; /* Reduced padding for mobile devices */
+        th, td {
+            padding: 12px;
             text-align: center;
             border: 1px solid #ddd;
-            font-size: 14px; /* Adjusted font size for mobile */
+            font-size: 13px;
         }
 
-        table th {
-            background-color: #4CAF50;
+        th {
+            background: #2c3e50;
             color: white;
+            font-weight: 600;
         }
 
-        table tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-
-        table tr:hover {
-            background-color: #f1f1f1;
-        }
-
-        table tr.editing {
-            background-color: #faebd7;
-        }
-
-        button.delete, button.edit {
-            padding: 10px 15px;
-            border: none;
-            cursor: pointer;
-            border-radius: 8px;
-        }
-
-        button.delete {
-            background-color: #f44336;
-            color: white;
-        }
-
-        button.delete:hover {
-            background-color: #e53935;
-        }
-
-        button.edit {
-            background-color: #2196F3;
-            color: white;
-        }
-
-        button.edit:hover {
-            background-color: #1976D2;
-        }
-
-        .slider {
-            margin-top: 10px;
+        tr:nth-child(even) {
+            background: #f9f9f9;
         }
 
         .image-preview {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 6px;
             cursor: pointer;
-            transition: transform 0.3s ease;
+            transition: transform 0.3s;
         }
 
         .image-preview:hover {
             transform: scale(1.1);
         }
 
-        #image-modal {
-            width: 90%; /* Adjust modal width */
-            height: auto; /* Auto height */
-            max-width: 600px;
-            display: none;
+        /* ألوان TP/SL */
+        tr.tp-stop-loss { background-color: #f4433666 !important; }
+        tr.tp-take-profit { background-color: #4caf507a !important; }
+        tr.tp-break-even { background-color: #ffeb3b6e !important; }
+
+        /* النوافذ المنبثقة */
+        .popup {
             position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: rgba(0, 0, 0, 0.8);
-            padding: 20px;
-            border-radius: 10px;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
             z-index: 1000;
         }
 
-        #image-modal img {
+        .popup-content {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            position: relative;
+            max-width: 95%;
+            max-height: 90vh;
+        }
+
+        .popup-img {
             max-width: 100%;
             max-height: 80vh;
-            display: block;
-            margin: auto;
+            border-radius: 4px;
         }
 
-        #image-modal button {
-            display: block;
-            margin: 20px auto 0;
-            padding: 10px 20px;
-            background-color: white;
-            color: black;
-            font-size: 16px;
-            border: none;
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 32px;
             cursor: pointer;
+            color: white;
+            background: #f44336;
+            border: 2px solid #d32f2f;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
         }
 
-        @media (max-width: 768px) {
-            body {
-                font-size: 14px;
-            }
+        .close-btn:hover {
+            background: #d32f2f;
+            transform: rotate(90deg) scale(1.1);
+        }
 
+        /* نافذة التعديل */
+        .edit-popup {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 95%;
+            max-width: 500px;
+        }
+
+        .edit-form-group {
+            margin-bottom: 12px;
+        }
+
+        .edit-file-label {
+            display: block;
+            background: #3498db;
+            color: white;
+            padding: 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px 0;
+            font-size: 13px;
+        }
+
+        .tp-sl-select {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 100%;
+            font-size: 14px;
+            background: #f8f9fa;
+        }
+
+        /* استجابة للشاشات الصغيرة */
+        @media (max-width: 768px) {
             .container {
-                padding: 15px;
+                padding: 10px;
+                margin: 5px auto;
             }
 
             h1 {
-                font-size: 24px;
+                font-size: 1.4em;
+                margin: 10px 0;
+            }
+
+            form {
+                grid-template-columns: 1fr;
+                gap: 10px;
             }
 
             button {
-                font-size: 14px;
+                width: 100%;
+                padding: 12px;
             }
 
-            table th, table td {
-                font-size: 12px;
+            th, td {
                 padding: 8px;
+                font-size: 12px;
+            }
+
+            .image-preview {
+                width: 40px;
+                height: 40px;
+            }
+
+            .close-btn {
+                top: 10px;
+                right: 10px;
+                width: 35px;
+                height: 35px;
+                font-size: 28px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                font-size: 13px;
             }
 
             input, select, textarea {
-                font-size: 14px;
-                padding: 10px;
+                padding: 6px 10px;
+                font-size: 13px;
+            }
+
+            .file-input-label {
+                padding: 8px;
+                font-size: 13px;
+            }
+
+            .edit-popup {
+                padding: 15px;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>تريدج جورنل</h1>
-
-        <form id="add-trade-form">
-            <div>
-                <label for="symbol">رمز الزوج المالي:</label>
+        <h1>📈 تريدج جورنال</h1>
+        
+        <form id="tradeForm">
+            <div class="form-group">
+                <label>الزوج المالي:</label>
                 <select id="symbol">
                     <option value="GOLD">GOLD</option>
                     <option value="EURUSD">EURUSD</option>
-                    <option value="USDJPY">USDJPY</option>
                     <option value="GBPUSD">GBPUSD</option>
-                    <option value="AUDUSD">AUDUSD</option>
-                    <option value="USDCAD">USDCAD</option>
-                    <option value="USDCHF">USDCHF</option>
+                    <option value="USDJPY">USDJPY</option>
                 </select>
             </div>
-            <div>
-                <label for="custom-symbol">أو أدخل اسم زوج جديد:</label>
-                <input type="text" id="custom-symbol" placeholder="ادخل اسم الزوج الجديد">
+            
+            <div class="form-group">
+                <label>إسم مخصص:</label>
+                <input type="text" id="customSymbol" placeholder="أدخل اسم زوج مخصص">
             </div>
-            <div>
-                <label for="action">العملية:</label>
+            
+            <div class="form-group">
+                <label>نوع الصفقة:</label>
                 <select id="action">
-                    <option value="Buy">Buy</option>
-                    <option value="Sell">Sell</option>
+                    <option value="BUY">شراء</option>
+                    <option value="SELL">بيع</option>
                 </select>
             </div>
-            <div>
-                <label for="details">التفاصيل:</label>
-                <textarea id="details" placeholder="أدخل تفاصيل الصفقة"></textarea>
+            
+            <div class="form-group">
+                <label>التفاصيل:</label>
+                <textarea id="details" rows="3"></textarea>
             </div>
-            <div>
-                <label for="before-entry-image">صورة قبل الدخول:</label>
-                <input type="file" id="before-entry-image" accept="image/*">
+            
+            <div class="form-group">
+                <label>صورة قبل الدخول:</label>
+                <input type="file" id="beforeImage" accept="image/*" hidden>
+                <label for="beforeImage" class="file-input-label">اختر صورة</label>
             </div>
-            <div>
-                <label for="after-entry-image">صورة بعد الدخول:</label>
-                <input type="file" id="after-entry-image" accept="image/*">
+            
+            <div class="form-group">
+                <label>صورة بعد الدخول:</label>
+                <input type="file" id="afterImage" accept="image/*" hidden>
+                <label for="afterImage" class="file-input-label">اختر صورة</label>
             </div>
-            <button type="submit">إضافة صفقة</button>
+            
+            <button type="submit">إضافة صفقة ➕</button>
         </form>
 
-        <h2>الصفقات المسجلة:</h2>
-        <table id="trade-table">
-            <thead>
-                <tr>
-                    <th>الرمز</th>
-                    <th>العملية</th>
-                    <th>التفاصيل</th>
-                    <th>صورة قبل الدخول</th>
-                    <th>صورة بعد الدخول</th>
-                    <th>الإجراء</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
+        <div class="table-container">
+            <table id="tradeTable">
+                <thead>
+                    <tr>
+                        <th>الزوج</th>
+                        <th>النوع</th>
+                        <th>التفاصيل</th>
+                        <th>TP/SL</th>
+                        <th>قبل الدخول</th>
+                        <th>بعد الدخول</th>
+                        <th>الإجراءات</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
     </div>
 
-    <div id="image-modal">
-        <img id="modal-img" src="" alt="">
-        <button onclick="closeModal()">إغلاق</button>
+    <div class="popup" id="imagePopup">
+        <div class="popup-content">
+            <span class="close-btn" onclick="closePopup()">×</span>
+            <img class="popup-img" id="popupImage">
+        </div>
+    </div>
+
+    <div class="popup" id="editPopup">
+        <div class="edit-popup">
+            <h2>تعديل الصفقة</h2>
+            <form id="editForm"></form>
+            <div style="margin-top: 15px; display: flex; gap: 10px;">
+                <button onclick="closeEditPopup()">إلغاء</button>
+                <button onclick="saveEdit()">حفظ التغييرات</button>
+            </div>
+        </div>
     </div>
 
     <script>
-        const form = document.getElementById('add-trade-form');
-        const tradeTable = document.getElementById('trade-table').querySelector('tbody');
-        let editingRow = null;
+        let trades = JSON.parse(localStorage.getItem('trades') || '[]').map(trade => ({
+            ...trade,
+            tp_sl: trade.tp_sl || 'Nothing'
+        }));
+        let currentEditIndex = null;
 
-        form.addEventListener('submit', async function(event) {
-            event.preventDefault();
-
-            const symbolSelect = document.getElementById('symbol').value;
-            const customSymbolInput = document.getElementById('custom-symbol').value.trim();
-            const action = document.getElementById('action').value;
-            const details = document.getElementById('details').value.trim();
-            const beforeEntryImage = document.getElementById('before-entry-image').files[0];
-            const afterEntryImage = document.getElementById('after-entry-image').files[0];
-
-            const symbol = customSymbolInput || symbolSelect;
-
-            if (!symbol) {
-                alert('يرجى إدخال رمز الزوج المالي.');
-                return;
-            }
-
-            const beforeImageUrl = beforeEntryImage ? await convertToBase64(beforeEntryImage) : '';
-            const afterImageUrl = afterEntryImage ? await convertToBase64(afterEntryImage) : '';
-
-            if (editingRow) {
-                updateRow(editingRow, symbol, action, details, beforeImageUrl, afterImageUrl);
-                editingRow.classList.remove('editing');
-                editingRow = null;
-            } else {
-                const row = document.createElement('tr');
-                addRow(row, symbol, action, details, beforeImageUrl, afterImageUrl);
-                tradeTable.appendChild(row);
-            }
-
-            saveToLocalStorage();
-            form.reset();
-        });
-
-        function convertToBase64(file) {
-            return new Promise((resolve, reject) => {
+        async function handleFile(file) {
+            if (!file) return null;
+            return new Promise((resolve) => {
                 const reader = new FileReader();
-                reader.onloadend = function() {
-                    resolve(reader.result);
-                };
-                reader.onerror = reject;
+                reader.onload = (e) => resolve(e.target.result);
                 reader.readAsDataURL(file);
             });
         }
 
-        function addRow(row, symbol, action, details, beforeImageUrl, afterImageUrl) {
-            row.innerHTML = `
-                <td>${symbol}</td>
-                <td>${action}</td>
-                <td>${details || 'لا توجد تفاصيل'}</td>
-                <td>${beforeImageUrl ? `<img src="${beforeImageUrl}" alt="صورة قبل الدخول" class="image-preview" style="width: 100px; height: auto;">` : 'لا توجد صورة'}</td>
-                <td>${afterImageUrl ? `<img src="${afterImageUrl}" alt="صورة بعد الدخول" class="image-preview" style="width: 100px; height: auto;">` : 'لا توجد صورة'}</td>
-                <td>
-                    <button class="edit">تعديل</button>
-                    <button class="delete">حذف</button>
-                </td>
+        function loadTrades() {
+            const tbody = document.querySelector('#tradeTable tbody');
+            tbody.innerHTML = '';
+            
+            trades.forEach((trade, index) => {
+                const row = document.createElement('tr');
+                row.dataset.index = index;
+                
+                if(trade.tp_sl === 'Stop Loss') row.classList.add('tp-stop-loss');
+                else if(trade.tp_sl === 'Take Profit') row.classList.add('tp-take-profit');
+                else if(trade.tp_sl === 'Break Even') row.classList.add('tp-break-even');
+                
+                row.innerHTML = `
+                    <td>${trade.symbol}</td>
+                    <td>${trade.action}</td>
+                    <td>${trade.details}</td>
+                    <td>${trade.tp_sl}</td>
+                    <td>${trade.before ? `<img src="${trade.before}" class="image-preview">` : 'لا يوجد'}</td>
+                    <td>${trade.after ? `<img src="${trade.after}" class="image-preview">` : 'لا يوجد'}</td>
+                    <td>
+                        <button onclick="deleteTrade(${index})">حذف</button>
+                        <button onclick="openEditPopup(${index})">تعديل</button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function deleteTrade(index) {
+            if(confirm('هل أنت متأكد من حذف هذه الصفقة؟')) {
+                trades.splice(index, 1);
+                saveData();
+                loadTrades();
+            }
+        }
+
+        function openEditPopup(index) {
+            currentEditIndex = index;
+            const trade = trades[index];
+            const form = document.getElementById('editForm');
+            
+            form.innerHTML = `
+                <div class="edit-form-group">
+                    <label>الزوج المالي:</label>
+                    <input type="text" id="editSymbol" value="${trade.symbol}">
+                </div>
+                
+                <div class="edit-form-group">
+                    <label>نوع الصفقة:</label>
+                    <select id="editAction">
+                        <option ${trade.action === 'BUY' ? 'selected' : ''} value="BUY">شراء</option>
+                        <option ${trade.action === 'SELL' ? 'selected' : ''} value="SELL">بيع</option>
+                    </select>
+                </div>
+                
+                <div class="edit-form-group">
+                    <label>التفاصيل:</label>
+                    <textarea id="editDetails">${trade.details}</textarea>
+                </div>
+                
+                <div class="edit-form-group">
+                    <label>إدارة الصفقة:</label>
+                    <select class="tp-sl-select" id="editTpSl">
+                        <option ${trade.tp_sl === 'Nothing' ? 'selected' : ''} value="Nothing">Nothing</option>
+                        <option ${trade.tp_sl === 'Take Profit' ? 'selected' : ''} value="Take Profit">Take Profit</option>
+                        <option ${trade.tp_sl === 'Stop Loss' ? 'selected' : ''} value="Stop Loss">Stop Loss</option>
+                        <option ${trade.tp_sl === 'Break Even' ? 'selected' : ''} value="Break Even">Break Even</option>
+                        <option ${trade.tp_sl === 'Manual Shutdown' ? 'selected' : ''} value="Manual Shutdown">Manual Shutdown</option>
+                    </select>
+                </div>
+                
+                <div class="edit-form-group">
+                    <label>صورة قبل الدخول:</label>
+                    <input type="file" id="editBeforeImage" accept="image/*" hidden>
+                    <label for="editBeforeImage" class="edit-file-label">تغيير الصورة</label>
+                    ${trade.before ? `<img src="${trade.before}" class="image-preview" width="50">` : ''}
+                </div>
+                
+                <div class="edit-form-group">
+                    <label>صورة بعد الدخول:</label>
+                    <input type="file" id="editAfterImage" accept="image/*" hidden>
+                    <label for="editAfterImage" class="edit-file-label">تغيير الصورة</label>
+                    ${trade.after ? `<img src="${trade.after}" class="image-preview" width="50">` : ''}
+                </div>
             `;
-
-            row.querySelector('.delete').addEventListener('click', function() {
-                row.remove();
-                saveToLocalStorage();
-            });
-
-            row.querySelector('.edit').addEventListener('click', function() {
-                editRow(row);
-            });
-
-            row.querySelectorAll('.image-preview').forEach(img => {
-                img.addEventListener('click', function() {
-                    showModal(img.src);
-                });
-            });
+            
+            document.getElementById('editPopup').style.display = 'flex';
         }
 
-        function updateRow(row, symbol, action, details, beforeImageUrl, afterImageUrl) {
-            row.innerHTML = `
-                <td>${symbol}</td>
-                <td>${action}</td>
-                <td>${details || 'لا توجد تفاصيل'}</td>
-                <td>${beforeImageUrl ? `<img src="${beforeImageUrl}" alt="صورة قبل الدخول" class="image-preview" style="width: 100px; height: auto;">` : 'لا توجد صورة'}</td>
-                <td>${afterImageUrl ? `<img src="${afterImageUrl}" alt="صورة بعد الدخول" class="image-preview" style="width: 100px; height: auto;">` : 'لا توجد صورة'}</td>
-                <td>
-                    <button class="edit">تعديل</button>
-                    <button class="delete">حذف</button>
-                </td>
-            `;
-
-            row.querySelector('.delete').addEventListener('click', function() {
-                row.remove();
-                saveToLocalStorage();
-            });
-
-            row.querySelector('.edit').addEventListener('click', function() {
-                editRow(row);
-            });
-
-            row.querySelectorAll('.image-preview').forEach(img => {
-                img.addEventListener('click', function() {
-                    showModal(img.src);
-                });
-            });
+        async function saveEdit() {
+            const trade = trades[currentEditIndex];
+            
+            trade.symbol = document.getElementById('editSymbol').value;
+            trade.action = document.getElementById('editAction').value;
+            trade.details = document.getElementById('editDetails').value;
+            trade.tp_sl = document.getElementById('editTpSl').value;
+            
+            const newBefore = await handleFile(document.getElementById('editBeforeImage').files[0]);
+            const newAfter = await handleFile(document.getElementById('editAfterImage').files[0]);
+            
+            if (newBefore) trade.before = newBefore;
+            if (newAfter) trade.after = newAfter;
+            
+            saveData();
+            loadTrades();
+            closeEditPopup();
         }
 
-        function editRow(row) {
-            const cells = row.querySelectorAll('td');
-            document.getElementById('symbol').value = cells[0].innerText;
-            document.getElementById('action').value = cells[1].innerText;
-            document.getElementById('details').value = cells[2].innerText;
-
-            editingRow = row;
-            row.classList.add('editing');
-        }
-
-        function showModal(imgSrc) {
-            const modal = document.getElementById('image-modal');
-            const modalImg = document.getElementById('modal-img');
-            modalImg.src = imgSrc;
-            modal.style.display = 'block';
-        }
-
-        function closeModal() {
-            document.getElementById('image-modal').style.display = 'none';
-        }
-
-        function saveToLocalStorage() {
-            const rows = Array.from(tradeTable.rows);
-            const trades = rows.map(row => {
-                return {
-                    symbol: row.cells[0].innerText,
-                    action: row.cells[1].innerText,
-                    details: row.cells[2].innerText,
-                    beforeImage: row.cells[3].querySelector('img') ? row.cells[3].querySelector('img').src : '',
-                    afterImage: row.cells[4].querySelector('img') ? row.cells[4].querySelector('img').src : ''
-                };
-            });
-
+        function saveData() {
             localStorage.setItem('trades', JSON.stringify(trades));
         }
 
-        function loadFromLocalStorage() {
-            const savedTrades = JSON.parse(localStorage.getItem('trades')) || [];
-            savedTrades.forEach(trade => {
-                const row = document.createElement('tr');
-                addRow(row, trade.symbol, trade.action, trade.details, trade.beforeImage, trade.afterImage);
-                tradeTable.appendChild(row);
-            });
+        document.getElementById('tradeForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const symbol = document.getElementById('customSymbol').value || document.getElementById('symbol').value;
+            const action = document.getElementById('action').value;
+            const details = document.getElementById('details').value;
+            
+            const beforeFile = document.getElementById('beforeImage').files[0];
+            const afterFile = document.getElementById('afterImage').files[0];
+            
+            const newTrade = {
+                symbol,
+                action,
+                details,
+                tp_sl: 'Nothing',
+                before: await handleFile(beforeFile),
+                after: await handleFile(afterFile)
+            };
+            
+            trades.push(newTrade);
+            saveData();
+            loadTrades();
+            e.target.reset();
+        });
+
+        function closePopup() {
+            document.getElementById('imagePopup').style.display = 'none';
         }
 
-        loadFromLocalStorage();
+        function closeEditPopup() {
+            document.getElementById('editPopup').style.display = 'none';
+        }
+
+        loadTrades();
+
+        document.querySelector('#tradeTable').addEventListener('click', (e) => {
+            if (e.target.classList.contains('image-preview')) {
+                document.getElementById('popupImage').src = e.target.src;
+                document.getElementById('imagePopup').style.display = 'flex';
+            }
+        });
     </script>
 </body>
 </html>
