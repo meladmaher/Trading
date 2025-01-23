@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ÊÑíÏÌ ÌæÑäá</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ØªØ±ÙŠØ¯Ø¬ Ø¬ÙˆØ±Ù†Ù„</title>
     <style>
         body {
             font-family: 'Cairo', 'Arial', sans-serif;
@@ -13,10 +14,10 @@
         }
 
         .container {
-            width: 80%;
+            width: 90%; /* Adjusted width for mobile devices */
             max-width: 1200px;
             margin: 40px auto;
-            padding: 30px;
+            padding: 20px; /* Reduced padding */
             background-color: #ffffff;
             border-radius: 10px;
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
@@ -25,15 +26,15 @@
         h1 {
             text-align: center;
             color: #333;
-            font-size: 36px;
-            margin-bottom: 20px;
+            font-size: 28px; /* Adjusted for mobile devices */
+            margin-bottom: 15px;
         }
 
         form {
             display: flex;
             flex-wrap: wrap;
             gap: 15px;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             align-items: center;
         }
 
@@ -89,10 +90,10 @@
         }
 
         table th, table td {
-            padding: 15px;
+            padding: 10px; /* Reduced padding for mobile devices */
             text-align: center;
             border: 1px solid #ddd;
-            font-size: 16px;
+            font-size: 14px; /* Adjusted font size for mobile */
         }
 
         table th {
@@ -151,8 +152,9 @@
         }
 
         #image-modal {
-            width: 115%;
-            height: 73%;
+            width: 90%; /* Adjust modal width */
+            height: auto; /* Auto height */
+            max-width: 600px;
             display: none;
             position: fixed;
             top: 50%;
@@ -165,7 +167,7 @@
         }
 
         #image-modal img {
-            max-width: 80%;
+            max-width: 100%;
             max-height: 80vh;
             display: block;
             margin: auto;
@@ -181,15 +183,43 @@
             border: none;
             cursor: pointer;
         }
+
+        @media (max-width: 768px) {
+            body {
+                font-size: 14px;
+            }
+
+            .container {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            button {
+                font-size: 14px;
+            }
+
+            table th, table td {
+                font-size: 12px;
+                padding: 8px;
+            }
+
+            input, select, textarea {
+                font-size: 14px;
+                padding: 10px;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>ÊÑíÏÌ ÌæÑäá</h1>
+        <h1>ØªØ±ÙŠØ¯Ø¬ Ø¬ÙˆØ±Ù†Ù„</h1>
 
         <form id="add-trade-form">
             <div>
-                <label for="symbol">ÑãÒ ÇáÒæÌ ÇáãÇáí:</label>
+                <label for="symbol">Ø±Ù…Ø² Ø§Ù„Ø²ÙˆØ¬ Ø§Ù„Ù…Ø§Ù„ÙŠ:</label>
                 <select id="symbol">
                     <option value="GOLD">GOLD</option>
                     <option value="EURUSD">EURUSD</option>
@@ -201,41 +231,41 @@
                 </select>
             </div>
             <div>
-                <label for="custom-symbol">Ãæ ÃÏÎá ÇÓã ÒæÌ ÌÏíÏ:</label>
-                <input type="text" id="custom-symbol" placeholder="ÇÏÎá ÇÓã ÇáÒæÌ ÇáÌÏíÏ">
+                <label for="custom-symbol">Ø£Ùˆ Ø£Ø¯Ø®Ù„ Ø§Ø³Ù… Ø²ÙˆØ¬ Ø¬Ø¯ÙŠØ¯:</label>
+                <input type="text" id="custom-symbol" placeholder="Ø§Ø¯Ø®Ù„ Ø§Ø³Ù… Ø§Ù„Ø²ÙˆØ¬ Ø§Ù„Ø¬Ø¯ÙŠØ¯">
             </div>
             <div>
-                <label for="action">ÇáÚãáíÉ:</label>
+                <label for="action">Ø§Ù„Ø¹Ù…Ù„ÙŠØ©:</label>
                 <select id="action">
                     <option value="Buy">Buy</option>
                     <option value="Sell">Sell</option>
                 </select>
             </div>
             <div>
-                <label for="details">ÇáÊİÇÕíá:</label>
-                <textarea id="details" placeholder="ÃÏÎá ÊİÇÕíá ÇáÕİŞÉ"></textarea>
+                <label for="details">Ø§Ù„ØªÙØ§ØµÙŠÙ„:</label>
+                <textarea id="details" placeholder="Ø£Ø¯Ø®Ù„ ØªÙØ§ØµÙŠÙ„ Ø§Ù„ØµÙÙ‚Ø©"></textarea>
             </div>
             <div>
-                <label for="before-entry-image">ÕæÑÉ ŞÈá ÇáÏÎæá:</label>
+                <label for="before-entry-image">ØµÙˆØ±Ø© Ù‚Ø¨Ù„ Ø§Ù„Ø¯Ø®ÙˆÙ„:</label>
                 <input type="file" id="before-entry-image" accept="image/*">
             </div>
             <div>
-                <label for="after-entry-image">ÕæÑÉ ÈÚÏ ÇáÏÎæá:</label>
+                <label for="after-entry-image">ØµÙˆØ±Ø© Ø¨Ø¹Ø¯ Ø§Ù„Ø¯Ø®ÙˆÙ„:</label>
                 <input type="file" id="after-entry-image" accept="image/*">
             </div>
-            <button type="submit">ÅÖÇİÉ ÕİŞÉ</button>
+            <button type="submit">Ø¥Ø¶Ø§ÙØ© ØµÙÙ‚Ø©</button>
         </form>
 
-        <h2>ÇáÕİŞÇÊ ÇáãÓÌáÉ:</h2>
+        <h2>Ø§Ù„ØµÙÙ‚Ø§Øª Ø§Ù„Ù…Ø³Ø¬Ù„Ø©:</h2>
         <table id="trade-table">
             <thead>
                 <tr>
-                    <th>ÇáÑãÒ</th>
-                    <th>ÇáÚãáíÉ</th>
-                    <th>ÇáÊİÇÕíá</th>
-                    <th>ÕæÑÉ ŞÈá ÇáÏÎæá</th>
-                    <th>ÕæÑÉ ÈÚÏ ÇáÏÎæá</th>
-                    <th>ÇáÅÌÑÇÁ</th>
+                    <th>Ø§Ù„Ø±Ù…Ø²</th>
+                    <th>Ø§Ù„Ø¹Ù…Ù„ÙŠØ©</th>
+                    <th>Ø§Ù„ØªÙØ§ØµÙŠÙ„</th>
+                    <th>ØµÙˆØ±Ø© Ù‚Ø¨Ù„ Ø§Ù„Ø¯Ø®ÙˆÙ„</th>
+                    <th>ØµÙˆØ±Ø© Ø¨Ø¹Ø¯ Ø§Ù„Ø¯Ø®ÙˆÙ„</th>
+                    <th>Ø§Ù„Ø¥Ø¬Ø±Ø§Ø¡</th>
                 </tr>
             </thead>
             <tbody></tbody>
@@ -244,7 +274,7 @@
 
     <div id="image-modal">
         <img id="modal-img" src="" alt="">
-        <button onclick="closeModal()">ÅÛáÇŞ</button>
+        <button onclick="closeModal()">Ø¥ØºÙ„Ø§Ù‚</button>
     </div>
 
     <script>
@@ -265,7 +295,7 @@
             const symbol = customSymbolInput || symbolSelect;
 
             if (!symbol) {
-                alert('íÑÌì ÅÏÎÇá ÑãÒ ÇáÒæÌ ÇáãÇáí.');
+                alert('ÙŠØ±Ø¬Ù‰ Ø¥Ø¯Ø®Ø§Ù„ Ø±Ù…Ø² Ø§Ù„Ø²ÙˆØ¬ Ø§Ù„Ù…Ø§Ù„ÙŠ.');
                 return;
             }
 
@@ -301,12 +331,12 @@
             row.innerHTML = `
                 <td>${symbol}</td>
                 <td>${action}</td>
-                <td>${details || 'áÇ ÊæÌÏ ÊİÇÕíá'}</td>
-                <td>${beforeImageUrl ? `<img src="${beforeImageUrl}" alt="ÕæÑÉ ŞÈá ÇáÏÎæá" class="image-preview" style="width: 100px; height: auto;">` : 'áÇ ÊæÌÏ ÕæÑÉ'}</td>
-                <td>${afterImageUrl ? `<img src="${afterImageUrl}" alt="ÕæÑÉ ÈÚÏ ÇáÏÎæá" class="image-preview" style="width: 100px; height: auto;">` : 'áÇ ÊæÌÏ ÕæÑÉ'}</td>
+                <td>${details || 'Ù„Ø§ ØªÙˆØ¬Ø¯ ØªÙØ§ØµÙŠÙ„'}</td>
+                <td>${beforeImageUrl ? `<img src="${beforeImageUrl}" alt="ØµÙˆØ±Ø© Ù‚Ø¨Ù„ Ø§Ù„Ø¯Ø®ÙˆÙ„" class="image-preview" style="width: 100px; height: auto;">` : 'Ù„Ø§ ØªÙˆØ¬Ø¯ ØµÙˆØ±Ø©'}</td>
+                <td>${afterImageUrl ? `<img src="${afterImageUrl}" alt="ØµÙˆØ±Ø© Ø¨Ø¹Ø¯ Ø§Ù„Ø¯Ø®ÙˆÙ„" class="image-preview" style="width: 100px; height: auto;">` : 'Ù„Ø§ ØªÙˆØ¬Ø¯ ØµÙˆØ±Ø©'}</td>
                 <td>
-                    <button class="edit">ÊÚÏíá</button>
-                    <button class="delete">ÍĞİ</button>
+                    <button class="edit">ØªØ¹Ø¯ÙŠÙ„</button>
+                    <button class="delete">Ø­Ø°Ù</button>
                 </td>
             `;
 
@@ -330,12 +360,12 @@
             row.innerHTML = `
                 <td>${symbol}</td>
                 <td>${action}</td>
-                <td>${details || 'áÇ ÊæÌÏ ÊİÇÕíá'}</td>
-                <td>${beforeImageUrl ? `<img src="${beforeImageUrl}" alt="ÕæÑÉ ŞÈá ÇáÏÎæá" class="image-preview" style="width: 100px; height: auto;">` : 'áÇ ÊæÌÏ ÕæÑÉ'}</td>
-                <td>${afterImageUrl ? `<img src="${afterImageUrl}" alt="ÕæÑÉ ÈÚÏ ÇáÏÎæá" class="image-preview" style="width: 100px; height: auto;">` : 'áÇ ÊæÌÏ ÕæÑÉ'}</td>
+                <td>${details || 'Ù„Ø§ ØªÙˆØ¬Ø¯ ØªÙØ§ØµÙŠÙ„'}</td>
+                <td>${beforeImageUrl ? `<img src="${beforeImageUrl}" alt="ØµÙˆØ±Ø© Ù‚Ø¨Ù„ Ø§Ù„Ø¯Ø®ÙˆÙ„" class="image-preview" style="width: 100px; height: auto;">` : 'Ù„Ø§ ØªÙˆØ¬Ø¯ ØµÙˆØ±Ø©'}</td>
+                <td>${afterImageUrl ? `<img src="${afterImageUrl}" alt="ØµÙˆØ±Ø© Ø¨Ø¹Ø¯ Ø§Ù„Ø¯Ø®ÙˆÙ„" class="image-preview" style="width: 100px; height: auto;">` : 'Ù„Ø§ ØªÙˆØ¬Ø¯ ØµÙˆØ±Ø©'}</td>
                 <td>
-                    <button class="edit">ÊÚÏíá</button>
-                    <button class="delete">ÍĞİ</button>
+                    <button class="edit">ØªØ¹Ø¯ÙŠÙ„</button>
+                    <button class="delete">Ø­Ø°Ù</button>
                 </td>
             `;
 
@@ -357,17 +387,18 @@
 
         function editRow(row) {
             const cells = row.querySelectorAll('td');
-            document.getElementById('symbol').value = cells[0].textContent;
-            document.getElementById('action').value = cells[1].textContent;
-            document.getElementById('details').value = cells[2].textContent;
-            row.classList.add('editing');
+            document.getElementById('symbol').value = cells[0].innerText;
+            document.getElementById('action').value = cells[1].innerText;
+            document.getElementById('details').value = cells[2].innerText;
+
             editingRow = row;
+            row.classList.add('editing');
         }
 
-        function showModal(src) {
+        function showModal(imgSrc) {
             const modal = document.getElementById('image-modal');
             const modalImg = document.getElementById('modal-img');
-            modalImg.src = src;
+            modalImg.src = imgSrc;
             modal.style.display = 'block';
         }
 
@@ -376,32 +407,30 @@
         }
 
         function saveToLocalStorage() {
-            const rows = tradeTable.querySelectorAll('tr');
-            const trades = Array.from(rows).map(row => {
-                const cells = row.querySelectorAll('td');
-                const beforeImg = row.querySelector('td:nth-child(4) img');
-                const afterImg = row.querySelector('td:nth-child(5) img');
+            const rows = Array.from(tradeTable.rows);
+            const trades = rows.map(row => {
                 return {
-                    symbol: cells[0].textContent,
-                    action: cells[1].textContent,
-                    details: cells[2].textContent,
-                    beforeImage: beforeImg ? beforeImg.src : '',
-                    afterImage: afterImg ? afterImg.src : ''
+                    symbol: row.cells[0].innerText,
+                    action: row.cells[1].innerText,
+                    details: row.cells[2].innerText,
+                    beforeImage: row.cells[3].querySelector('img') ? row.cells[3].querySelector('img').src : '',
+                    afterImage: row.cells[4].querySelector('img') ? row.cells[4].querySelector('img').src : ''
                 };
             });
+
             localStorage.setItem('trades', JSON.stringify(trades));
         }
 
         function loadFromLocalStorage() {
-            const trades = JSON.parse(localStorage.getItem('trades') || '[]');
-            trades.forEach(trade => {
+            const savedTrades = JSON.parse(localStorage.getItem('trades')) || [];
+            savedTrades.forEach(trade => {
                 const row = document.createElement('tr');
                 addRow(row, trade.symbol, trade.action, trade.details, trade.beforeImage, trade.afterImage);
                 tradeTable.appendChild(row);
             });
         }
 
-        window.onload = loadFromLocalStorage;
+        loadFromLocalStorage();
     </script>
 </body>
 </html>
