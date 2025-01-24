@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-
+ 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تريدج جورنال</title>
     <style>
-        /* أنماط عامة */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -35,7 +34,6 @@
             font-size: 1.6em;
         }
 
-        /* أنماط الفورم */
         form {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -87,7 +85,6 @@
             background: #2980b9;
         }
 
-        /* الجدول */
         .table-container {
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
@@ -129,12 +126,10 @@
             transform: scale(1.1);
         }
 
-        /* ألوان TP/SL */
         tr.tp-stop-loss { background-color: #f4433666 !important; }
         tr.tp-take-profit { background-color: #4caf507a !important; }
         tr.tp-break-even { background-color: #ffeb3b6e !important; }
 
-        /* النوافذ المنبثقة */
         .popup {
             position: fixed;
             top: 0;
@@ -186,7 +181,6 @@
             transform: rotate(90deg) scale(1.1);
         }
 
-        /* نافذة التعديل */
         .edit-popup {
             background: white;
             padding: 20px;
@@ -219,7 +213,10 @@
             background: #f8f9fa;
         }
 
-        /* استجابة للشاشات الصغيرة */
+        .date-cell {
+            white-space: nowrap;
+        }
+
         @media (max-width: 768px) {
             .container {
                 padding: 10px;
@@ -283,7 +280,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>📈 تريدج جورنال</h1>
+        <h1>?? تريدج جورنال</h1>
         
         <form id="tradeForm">
             <div class="form-group">
@@ -326,13 +323,14 @@
                 <label for="afterImage" class="file-input-label">اختر صورة</label>
             </div>
             
-            <button type="submit">إضافة صفقة ➕</button>
+            <button type="submit">إضافة صفقة ?</button>
         </form>
 
         <div class="table-container">
             <table id="tradeTable">
                 <thead>
                     <tr>
+                        <th>التاريخ</th>
                         <th>الزوج</th>
                         <th>النوع</th>
                         <th>التفاصيل</th>
@@ -366,10 +364,21 @@
     </div>
 
     <script>
+        function getCurrentDate() {
+            const days = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+            const date = new Date();
+            return {
+                dayName: days[date.getDay()],
+                fullDate: date.toLocaleDateString('ar-EG')
+            };
+        }
+
         let trades = JSON.parse(localStorage.getItem('trades') || '[]').map(trade => ({
             ...trade,
-            tp_sl: trade.tp_sl || 'Nothing'
+            tp_sl: trade.tp_sl || 'Nothing',
+            date: trade.date || getCurrentDate()
         }));
+        
         let currentEditIndex = null;
 
         async function handleFile(file) {
@@ -394,6 +403,7 @@
                 else if(trade.tp_sl === 'Break Even') row.classList.add('tp-break-even');
                 
                 row.innerHTML = `
+                    <td class="date-cell">${trade.date.dayName}<br>${trade.date.fullDate}</td>
                     <td>${trade.symbol}</td>
                     <td>${trade.action}</td>
                     <td>${trade.details}</td>
@@ -508,6 +518,7 @@
                 action,
                 details,
                 tp_sl: 'Nothing',
+                date: getCurrentDate(),
                 before: await handleFile(beforeFile),
                 after: await handleFile(afterFile)
             };
