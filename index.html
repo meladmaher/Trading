@@ -1,23 +1,72 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
- 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تريدج جورنال</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        /* إضافة أنماط الوضع الليلي فقط */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            cursor: pointer;
+            font-size: 24px;
+            color: #f39c12;
+            transition: 0.3s;
+        }
+        .theme-toggle .hidden { display: none; }
+        .dark-mode {
+            background: #1a1a1a;
+            color: #fff;
+        }
+        .dark-mode .container {
+            background: #2d2d2d;
+            box-shadow: 0 2px 5px rgba(255,255,255,0.1);
+        }
+        .dark-mode th {
+            background: #3d3d3d;
+            color: #fff;
+        }
+        .dark-mode tr:nth-child(even) {
+            background: #333;
+        }
+        .dark-mode input,
+        .dark-mode select,
+        .dark-mode textarea {
+            background: #444;
+            color: #fff;
+            border-color: #666;
+        }
+        .dark-mode .stats-container {
+            background: #2d2d2d;
+        }
+        .dark-mode .popup-content {
+            background: #2d2d2d;
+            color: #fff;
+        }
+        .dark-mode button {
+            background: #3498db;
+        }
+        .dark-mode .file-input-label {
+            background: #2980b9;
+        }
+
+        /* كل الأنماط الأصلية تبقى كما هي */
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
-
         body {
             font-family: 'Cairo', Arial, sans-serif;
             background-color: #f1f1f1;
             line-height: 1.6;
             font-size: 14px;
+            height: 100vh;
+            transition: 0.3s;
         }
-
         .container {
             background: white;
             max-width: 1200px;
@@ -25,27 +74,28 @@
             padding: 15px;
             border-radius: 10px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
         }
-
         h1 {
             text-align: center;
             color: #2c3e50;
-            margin: 15px 0;
+            margin: 10px 0;
             font-size: 1.6em;
         }
-
-        form {
+        #tradeForm {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 12px;
-            margin-bottom: 20px;
+            gap: 10px;
+            padding: 10px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            margin-bottom: 10px;
         }
-
         .form-group {
             display: flex;
             flex-direction: column;
         }
-
         input, select, textarea {
             padding: 8px 12px;
             border: 1px solid #ddd;
@@ -54,7 +104,6 @@
             margin-top: 4px;
             width: 100%;
         }
-
         button {
             background: #27ae60;
             color: white;
@@ -65,12 +114,10 @@
             font-size: 14px;
             transition: all 0.3s;
         }
-
         button:hover {
             background: #219a52;
             transform: translateY(-1px);
         }
-
         .file-input-label {
             background: #3498db;
             text-align: center;
@@ -80,39 +127,44 @@
             color: white;
             transition: all 0.3s;
         }
-
         .file-input-label:hover {
             background: #2980b9;
         }
-
-        .table-container {
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
+        .Deals {
+          height: 59vh;
+          overflow: auto;
         }
-
+        .table-container {
+            flex: 1;
+            overflow-y: auto;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            position: relative;
+        }
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 600px;
         }
-
+        thead th {
+            position: sticky;
+            top: 0;
+            background: #2c3e50;
+            z-index: 1;
+        }
         th, td {
             padding: 12px;
             text-align: center;
             border: 1px solid #ddd;
             font-size: 13px;
         }
-
         th {
-            background: #2c3e50;
             color: white;
             font-weight: 600;
         }
-
         tr:nth-child(even) {
             background: #f9f9f9;
         }
-
         .image-preview {
             width: 50px;
             height: 50px;
@@ -121,15 +173,63 @@
             cursor: pointer;
             transition: transform 0.3s;
         }
-
         .image-preview:hover {
             transform: scale(1.1);
         }
-
         tr.tp-stop-loss { background-color: #f4433666 !important; }
         tr.tp-take-profit { background-color: #4caf507a !important; }
         tr.tp-break-even { background-color: #ffeb3b6e !important; }
-
+        .stats {
+          height: 100vh;
+        }
+        .stats-container {
+            background: #fff;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .stats-container h2 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+        .stats-content {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .stat-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+        .stat-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: bold;
+            color: white;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .stat-circle.total { background: #3498db; }
+        .stat-circle.tp { background: #2ecc71; }
+        .stat-circle.be { background: #f1c40f; }
+        .stat-circle.sl { background: #e74c3c; }
+        .stat-circle.ms { background: #9b59b6; }
+        .stat-label {
+            font-size: 13px;
+            color: #666;
+            text-align: center;
+            max-width: 100px;
+        }
         .popup {
             position: fixed;
             top: 0;
@@ -142,7 +242,6 @@
             align-items: center;
             z-index: 1000;
         }
-
         .popup-content {
             background: white;
             padding: 20px;
@@ -151,13 +250,11 @@
             max-width: 95%;
             max-height: 90vh;
         }
-
         .popup-img {
             max-width: 100%;
             max-height: 80vh;
             border-radius: 4px;
         }
-
         .close-btn {
             position: absolute;
             top: 15px;
@@ -175,12 +272,10 @@
             justify-content: center;
             transition: all 0.3s;
         }
-
         .close-btn:hover {
             background: #d32f2f;
             transform: rotate(90deg) scale(1.1);
         }
-
         .edit-popup {
             background: white;
             padding: 20px;
@@ -188,11 +283,9 @@
             width: 95%;
             max-width: 500px;
         }
-
         .edit-form-group {
             margin-bottom: 12px;
         }
-
         .edit-file-label {
             display: block;
             background: #3498db;
@@ -203,7 +296,6 @@
             margin: 5px 0;
             font-size: 13px;
         }
-
         .tp-sl-select {
             padding: 8px;
             border: 1px solid #ddd;
@@ -212,42 +304,29 @@
             font-size: 14px;
             background: #f8f9fa;
         }
-
         .date-cell {
             white-space: nowrap;
         }
-
         @media (max-width: 768px) {
             .container {
                 padding: 10px;
                 margin: 5px auto;
             }
-
-            h1 {
-                font-size: 1.4em;
-                margin: 10px 0;
-            }
-
-            form {
+            #tradeForm {
                 grid-template-columns: 1fr;
-                gap: 10px;
             }
-
             button {
                 width: 100%;
                 padding: 12px;
             }
-
             th, td {
                 padding: 8px;
                 font-size: 12px;
             }
-
             .image-preview {
                 width: 40px;
                 height: 40px;
             }
-
             .close-btn {
                 top: 10px;
                 right: 10px;
@@ -255,33 +334,43 @@
                 height: 35px;
                 font-size: 28px;
             }
+            .stat-circle {
+                width: 70px;
+                height: 70px;
+                font-size: 20px;
+            }
         }
-
         @media (max-width: 480px) {
             body {
                 font-size: 13px;
             }
-
             input, select, textarea {
                 padding: 6px 10px;
                 font-size: 13px;
             }
-
             .file-input-label {
                 padding: 8px;
-                font-size: 13px;
             }
-
-            .edit-popup {
-                padding: 15px;
+            .stat-circle {
+                width: 60px;
+                height: 60px;
+                font-size: 18px;
+            }
+            .stat-label {
+                font-size: 12px;
             }
         }
     </style>
 </head>
 <body>
+    <!-- إضافة أيقونات التبديل هنا -->
+    <div class="theme-toggle" onclick="toggleTheme()">
+        <i class="fas fa-sun"></i>
+        <i class="fas fa-moon hidden"></i>
+    </div>
+
     <div class="container">
-        <h1>?? تريدج جورنال</h1>
-        
+        <h1>تريدج جورنال</h1>
         <form id="tradeForm">
             <div class="form-group">
                 <label>الزوج المالي:</label>
@@ -292,12 +381,10 @@
                     <option value="USDJPY">USDJPY</option>
                 </select>
             </div>
-            
             <div class="form-group">
                 <label>إسم مخصص:</label>
                 <input type="text" id="customSymbol" placeholder="أدخل اسم زوج مخصص">
             </div>
-            
             <div class="form-group">
                 <label>نوع الصفقة:</label>
                 <select id="action">
@@ -305,53 +392,87 @@
                     <option value="SELL">بيع</option>
                 </select>
             </div>
-            
             <div class="form-group">
                 <label>التفاصيل:</label>
                 <textarea id="details" rows="3"></textarea>
             </div>
-            
             <div class="form-group">
                 <label>صورة قبل الدخول:</label>
                 <input type="file" id="beforeImage" accept="image/*" hidden>
                 <label for="beforeImage" class="file-input-label">اختر صورة</label>
             </div>
-            
             <div class="form-group">
                 <label>صورة بعد الدخول:</label>
                 <input type="file" id="afterImage" accept="image/*" hidden>
                 <label for="afterImage" class="file-input-label">اختر صورة</label>
             </div>
-            
-            <button type="submit">إضافة صفقة ?</button>
+            <button type="submit">إضافة صفقة</button>
         </form>
-
-        <div class="table-container">
-            <table id="tradeTable">
-                <thead>
-                    <tr>
-                        <th>التاريخ</th>
-                        <th>الزوج</th>
-                        <th>النوع</th>
-                        <th>التفاصيل</th>
-                        <th>TP/SL</th>
-                        <th>قبل الدخول</th>
-                        <th>بعد الدخول</th>
-                        <th>الإجراءات</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
+        <div class="Deals">
+            <div class="table-container">
+                <table id="tradeTable">
+                    <thead>
+                        <tr>
+                            <th>التاريخ</th>
+                            <th>الزوج</th>
+                            <th>النوع</th>
+                            <th>التفاصيل</th>
+                            <th>TP/SL</th>
+                            <th>قبل الدخول</th>
+                            <th>بعد الدخول</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
         </div>
     </div>
-
+    <div class="container">
+        <div class="stats">
+            <div class="stats-container">
+                <h2>الإحصائيات</h2>
+                <div class="stats-content">
+                    <div class="stat-box">
+                        <div class="stat-circle total">
+                            <div class="stat-value" id="totalTrades">0</div>
+                        </div>
+                        <div class="stat-label">إجمالي الصفقات</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-circle tp">
+                            <div class="stat-value" id="tpCount">0</div>
+                        </div>
+                        <div class="stat-label">Take Profit</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-circle be">
+                            <div class="stat-value" id="beCount">0</div>
+                        </div>
+                        <div class="stat-label">Break Even</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-circle sl">
+                            <div class="stat-value" id="slCount">0</div>
+                        </div>
+                        <div class="stat-label">Stop Loss</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-circle ms">
+                            <div class="stat-value" id="msCount">0</div>
+                        </div>
+                        <div class="stat-label">Manual Shutdown</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="popup" id="imagePopup">
         <div class="popup-content">
             <span class="close-btn" onclick="closePopup()">×</span>
             <img class="popup-img" id="popupImage">
         </div>
     </div>
-
     <div class="popup" id="editPopup">
         <div class="edit-popup">
             <h2>تعديل الصفقة</h2>
@@ -364,6 +485,23 @@
     </div>
 
     <script>
+        // إضافة دالة التبديل بين الوضعين
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            const icons = document.querySelectorAll('.theme-toggle i');
+            icons.forEach(icon => icon.classList.toggle('hidden'));
+            localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+        }
+
+        // تحميل التفضيلات عند البدء
+        window.addEventListener('load', () => {
+            if(localStorage.getItem('darkMode') === 'true') {
+                document.body.classList.add('dark-mode');
+                document.querySelectorAll('.theme-toggle i').forEach(icon => icon.classList.toggle('hidden'));
+            }
+        });
+
+        // الكود الأصلي
         function getCurrentDate() {
             const days = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
             const date = new Date();
@@ -378,7 +516,7 @@
             tp_sl: trade.tp_sl || 'Nothing',
             date: trade.date || getCurrentDate()
         }));
-        
+
         let currentEditIndex = null;
 
         async function handleFile(file) {
@@ -390,18 +528,34 @@
             });
         }
 
+        function updateStats() {
+            const stats = {
+                total: trades.length,
+                tp: trades.filter(t => t.tp_sl === 'Take Profit').length,
+                be: trades.filter(t => t.tp_sl === 'Break Even').length,
+                sl: trades.filter(t => t.tp_sl === 'Stop Loss').length,
+                ms: trades.filter(t => t.tp_sl === 'Manual Shutdown').length
+            };
+
+            document.getElementById('totalTrades').textContent = stats.total;
+            document.getElementById('tpCount').textContent = stats.tp;
+            document.getElementById('beCount').textContent = stats.be;
+            document.getElementById('slCount').textContent = stats.sl;
+            document.getElementById('msCount').textContent = stats.ms;
+        }
+
         function loadTrades() {
             const tbody = document.querySelector('#tradeTable tbody');
             tbody.innerHTML = '';
-            
+
             trades.forEach((trade, index) => {
                 const row = document.createElement('tr');
                 row.dataset.index = index;
-                
+
                 if(trade.tp_sl === 'Stop Loss') row.classList.add('tp-stop-loss');
                 else if(trade.tp_sl === 'Take Profit') row.classList.add('tp-take-profit');
                 else if(trade.tp_sl === 'Break Even') row.classList.add('tp-break-even');
-                
+
                 row.innerHTML = `
                     <td class="date-cell">${trade.date.dayName}<br>${trade.date.fullDate}</td>
                     <td>${trade.symbol}</td>
@@ -417,6 +571,7 @@
                 `;
                 tbody.appendChild(row);
             });
+            updateStats();
         }
 
         function deleteTrade(index) {
@@ -431,13 +586,12 @@
             currentEditIndex = index;
             const trade = trades[index];
             const form = document.getElementById('editForm');
-            
+
             form.innerHTML = `
                 <div class="edit-form-group">
                     <label>الزوج المالي:</label>
                     <input type="text" id="editSymbol" value="${trade.symbol}">
                 </div>
-                
                 <div class="edit-form-group">
                     <label>نوع الصفقة:</label>
                     <select id="editAction">
@@ -445,12 +599,10 @@
                         <option ${trade.action === 'SELL' ? 'selected' : ''} value="SELL">بيع</option>
                     </select>
                 </div>
-                
                 <div class="edit-form-group">
                     <label>التفاصيل:</label>
                     <textarea id="editDetails">${trade.details}</textarea>
                 </div>
-                
                 <div class="edit-form-group">
                     <label>إدارة الصفقة:</label>
                     <select class="tp-sl-select" id="editTpSl">
@@ -461,14 +613,12 @@
                         <option ${trade.tp_sl === 'Manual Shutdown' ? 'selected' : ''} value="Manual Shutdown">Manual Shutdown</option>
                     </select>
                 </div>
-                
                 <div class="edit-form-group">
                     <label>صورة قبل الدخول:</label>
                     <input type="file" id="editBeforeImage" accept="image/*" hidden>
                     <label for="editBeforeImage" class="edit-file-label">تغيير الصورة</label>
                     ${trade.before ? `<img src="${trade.before}" class="image-preview" width="50">` : ''}
                 </div>
-                
                 <div class="edit-form-group">
                     <label>صورة بعد الدخول:</label>
                     <input type="file" id="editAfterImage" accept="image/*" hidden>
@@ -476,24 +626,24 @@
                     ${trade.after ? `<img src="${trade.after}" class="image-preview" width="50">` : ''}
                 </div>
             `;
-            
+
             document.getElementById('editPopup').style.display = 'flex';
         }
 
         async function saveEdit() {
             const trade = trades[currentEditIndex];
-            
+
             trade.symbol = document.getElementById('editSymbol').value;
             trade.action = document.getElementById('editAction').value;
             trade.details = document.getElementById('editDetails').value;
             trade.tp_sl = document.getElementById('editTpSl').value;
-            
+
             const newBefore = await handleFile(document.getElementById('editBeforeImage').files[0]);
             const newAfter = await handleFile(document.getElementById('editAfterImage').files[0]);
-            
+
             if (newBefore) trade.before = newBefore;
             if (newAfter) trade.after = newAfter;
-            
+
             saveData();
             loadTrades();
             closeEditPopup();
@@ -505,14 +655,14 @@
 
         document.getElementById('tradeForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            
+
             const symbol = document.getElementById('customSymbol').value || document.getElementById('symbol').value;
             const action = document.getElementById('action').value;
             const details = document.getElementById('details').value;
-            
+
             const beforeFile = document.getElementById('beforeImage').files[0];
             const afterFile = document.getElementById('afterImage').files[0];
-            
+
             const newTrade = {
                 symbol,
                 action,
@@ -522,7 +672,7 @@
                 before: await handleFile(beforeFile),
                 after: await handleFile(afterFile)
             };
-            
+
             trades.push(newTrade);
             saveData();
             loadTrades();
