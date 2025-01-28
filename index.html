@@ -15,8 +15,8 @@
             background-color: #f1f1f1;
             line-height: 1.6;
             font-size: 14px;
-           
-            
+
+
         }
 
         .container {
@@ -345,7 +345,7 @@
 
         @media (max-width: 480px) {
             body {
-              
+
 		font-size: 20px;
             }
 
@@ -372,15 +372,15 @@
                 padding: 6px;
                 font-size: 11px;
             }
-            
+
             .image-preview {
                width: 30px;
                height: 30px;
             }
-            
+
             button {
-                /*padding: 6px;/*
-                /*font-size: 11px;/*
+                /* padding: 6px;
+                font-size: 11px; */
             }
 
             .stat-box {
@@ -422,12 +422,12 @@
                     <option value="USDJPY">USDJPY</option>
                 </select>
             </div>
-            
+
             <div class="form-group">
                 <label>إسم مخصص:</label>
                 <input type="text" id="customSymbol" placeholder="أدخل اسم زوج مخصص">
             </div>
-            
+
             <div class="form-group">
                 <label>نوع الصفقة:</label>
                 <select id="action">
@@ -435,7 +435,7 @@
                     <option value="SELL">بيع</option>
                 </select>
             </div>
-            
+
             <div class="form-group">
                 <label>الجلسة:</label>
                 <select id="session">
@@ -447,24 +447,24 @@
                     <option value="Outside Liquidity">Outside Liquidity</option>
                 </select>
             </div>
-            
+
             <div class="form-group">
                 <label>التفاصيل:</label>
                 <textarea id="details" rows="3"></textarea>
             </div>
-            
+
             <div class="form-group">
                 <label>صورة قبل الدخول:</label>
                 <input type="file" id="beforeImage" accept="image/*" hidden>
                 <label for="beforeImage" class="file-input-label">اختر صورة</label>
             </div>
-            
+
             <div class="form-group">
                 <label>صورة بعد الدخول:</label>
                 <input type="file" id="afterImage" accept="image/*" hidden>
                 <label for="afterImage" class="file-input-label">اختر صورة</label>
             </div>
-            
+
             <button type="submit">إضافة صفقة ?</button>
         </form>
 
@@ -487,43 +487,49 @@
             </table>
         </div>
 
-        <div class="stats-container">
-            <h2>الإحصائيات</h2>
-            <div class="stats-content">
-                <div class="stat-box">
-                    <div class="stat-circle total">
-                        <div class="stat-value" id="totalTrades">0</div>
-                    </div>
-                    <div class="stat-label">إجمالي الصفقات</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-circle tp">
-                        <div class="stat-value" id="tpCount">0</div>
-                    </div>
-                    <div class="stat-label">Take Profit</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-circle be">
-                        <div class="stat-value" id="beCount">0</div>
-                    </div>
-                    <div class="stat-label">Break Even</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-circle sl">
-                        <div class="stat-value" id="slCount">0</div>
-                    </div>
-                    <div class="stat-label">Stop Loss</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-circle ms">
-                        <div class="stat-value" id="msCount">0</div>
-                    </div>
-                    <div class="stat-label">Manual Shutdown</div>
-                </div>
-            </div>
-        </div>
     </div>
+    <div class="Statistics">
 
+<div class="container">
+  <!-- ---------------------------------------------------------------------------- -->
+          <div class="stats-container">
+              <h2>الإحصائيات</h2>
+              <div class="stats-content">
+                  <div class="stat-box">
+                      <div class="stat-circle total">
+                          <div class="stat-value" id="totalTrades">0</div>
+                      </div>
+                      <div class="stat-label">إجمالي الصفقات</div>
+                  </div>
+                  <div class="stat-box">
+                      <div class="stat-circle tp">
+                          <div class="stat-value" id="tpCount">0</div>
+                      </div>
+                      <div class="stat-label">Take Profit</div>
+                  </div>
+                  <div class="stat-box">
+                      <div class="stat-circle be">
+                          <div class="stat-value" id="beCount">0</div>
+                      </div>
+                      <div class="stat-label">Break Even</div>
+                  </div>
+                  <div class="stat-box">
+                      <div class="stat-circle sl">
+                          <div class="stat-value" id="slCount">0</div>
+                      </div>
+                      <div class="stat-label">Stop Loss</div>
+                  </div>
+                  <div class="stat-box">
+                      <div class="stat-circle ms">
+                          <div class="stat-value" id="msCount">0</div>
+                      </div>
+                      <div class="stat-label">Manual Shutdown</div>
+                  </div>
+              </div>
+          </div>
+          <!-- ---------------------------------------- -->
+        </div>
+</div>
     <div class="popup" id="imagePopup">
         <div class="popup-content">
             <span class="close-btn" onclick="closePopup()">×</span>
@@ -558,7 +564,7 @@
             session: trade.session || 'Nothing',
             date: trade.date || getCurrentDate()
         }));
-        
+
         let currentEditIndex = null;
 
         async function handleFile(file) {
@@ -589,15 +595,15 @@
         function loadTrades() {
             const tbody = document.querySelector('#tradeTable tbody');
             tbody.innerHTML = '';
-            
+
             trades.forEach((trade, index) => {
                 const row = document.createElement('tr');
                 row.dataset.index = index;
-                
+
                 if(trade.tp_sl === 'Stop Loss') row.classList.add('tp-stop-loss');
                 else if(trade.tp_sl === 'Take Profit') row.classList.add('tp-take-profit');
                 else if(trade.tp_sl === 'Break Even') row.classList.add('tp-break-even');
-                
+
                 row.innerHTML = `
                     <td class="date-cell">${trade.date.dayName}<br>${trade.date.fullDate}</td>
                     <td>${trade.symbol}</td>
@@ -629,13 +635,13 @@
             currentEditIndex = index;
             const trade = trades[index];
             const form = document.getElementById('editForm');
-            
+
             form.innerHTML = `
                 <div class="edit-form-group">
                     <label>الزوج المالي:</label>
                     <input type="text" id="editSymbol" value="${trade.symbol}">
                 </div>
-                
+
                 <div class="edit-form-group">
                     <label>نوع الصفقة:</label>
                     <select id="editAction">
@@ -643,7 +649,7 @@
                         <option ${trade.action === 'SELL' ? 'selected' : ''} value="SELL">بيع</option>
                     </select>
                 </div>
-                
+
                 <div class="edit-form-group">
                     <label>الجلسة:</label>
                     <select id="editSession">
@@ -655,12 +661,12 @@
                         <option ${trade.session === 'Outside Liquidity' ? 'selected' : ''} value="Outside Liquidity">Outside Liquidity</option>
                     </select>
                 </div>
-                
+
                 <div class="edit-form-group">
                     <label>التفاصيل:</label>
                     <textarea id="editDetails">${trade.details}</textarea>
                 </div>
-                
+
                 <div class="edit-form-group">
                     <label>إدارة الصفقة:</label>
                     <select class="tp-sl-select" id="editTpSl">
@@ -671,14 +677,14 @@
                         <option ${trade.tp_sl === 'Manual Shutdown' ? 'selected' : ''} value="Manual Shutdown">Manual Shutdown</option>
                     </select>
                 </div>
-                
+
                 <div class="edit-form-group">
                     <label>صورة قبل الدخول:</label>
                     <input type="file" id="editBeforeImage" accept="image/*" hidden>
                     <label for="editBeforeImage" class="edit-file-label">تغيير الصورة</label>
                     ${trade.before ? `<img src="${trade.before}" class="image-preview" width="50">` : ''}
                 </div>
-                
+
                 <div class="edit-form-group">
                     <label>صورة بعد الدخول:</label>
                     <input type="file" id="editAfterImage" accept="image/*" hidden>
@@ -686,25 +692,25 @@
                     ${trade.after ? `<img src="${trade.after}" class="image-preview" width="50">` : ''}
                 </div>
             `;
-            
+
             document.getElementById('editPopup').style.display = 'flex';
         }
 
         async function saveEdit() {
             const trade = trades[currentEditIndex];
-            
+
             trade.symbol = document.getElementById('editSymbol').value;
             trade.action = document.getElementById('editAction').value;
             trade.session = document.getElementById('editSession').value;
             trade.details = document.getElementById('editDetails').value;
             trade.tp_sl = document.getElementById('editTpSl').value;
-            
+
             const newBefore = await handleFile(document.getElementById('editBeforeImage').files[0]);
             const newAfter = await handleFile(document.getElementById('editAfterImage').files[0]);
-            
+
             if (newBefore) trade.before = newBefore;
             if (newAfter) trade.after = newAfter;
-            
+
             saveData();
             loadTrades();
             closeEditPopup();
@@ -716,15 +722,15 @@
 
         document.getElementById('tradeForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            
+
             const symbol = document.getElementById('customSymbol').value || document.getElementById('symbol').value;
             const action = document.getElementById('action').value;
             const details = document.getElementById('details').value;
             const session = document.getElementById('session').value;
-            
+
             const beforeFile = document.getElementById('beforeImage').files[0];
             const afterFile = document.getElementById('afterImage').files[0];
-            
+
             const newTrade = {
                 symbol,
                 action,
@@ -735,7 +741,7 @@
                 before: await handleFile(beforeFile),
                 after: await handleFile(afterFile)
             };
-            
+
             trades.push(newTrade);
             saveData();
             loadTrades();
