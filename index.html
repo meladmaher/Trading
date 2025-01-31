@@ -1,417 +1,89 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تريدج جورنال</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: 'Cairo', Arial, sans-serif;
-            background-color: #f1f1f1;
-            line-height: 1.6;
-            font-size: 14px;
-
-
-        }
-
-        .container {
-            background: white;
-            max-width: 1200px;
-            margin: 10px auto;
-            padding: 15px;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            height: 97vh;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            overflow: hidden;
-        }
-
-        h1 {
-            text-align: center;
-            color: #2c3e50;
-            margin: 10px 0;
-            font-size: 1.6em;
-        }
-
-        #tradeForm {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 10px;
-            padding: 10px;
-            border: 1px solid #eee;
-            border-radius: 8px;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-        }
-
-        input, select, textarea {
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 14px;
-            margin-top: 4px;
-            width: 100%;
-        }
-
-        button {
-            background: #27ae60;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.3s;
-        }
-
-        button:hover {
-            background: #219a52;
-            transform: translateY(-1px);
-        }
-
-        .file-input-label {
-            background: #3498db;
-            text-align: center;
-            padding: 10px;
-            border-radius: 6px;
-            cursor: pointer;
-            color: white;
-            transition: all 0.3s;
-        }
-
-        .file-input-label:hover {
-            background: #2980b9;
-        }
-
-        .table-container {
-            flex: 1;
-            min-height: 200px;
-            overflow-y: auto;
-            border: 1px solid #eee;
-            border-radius: 8px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        thead th {
-            position: sticky;
-            top: 0;
-            background: #2c3e50;
-            z-index: 1;
-        }
-
-        th, td {
-            padding: 12px;
-            text-align: center;
-            border: 1px solid #ddd;
-            font-size: 13px;
-        }
-
-        th {
-            color: white;
-            font-weight: 600;
-        }
-
-        tr:nth-child(even) {
-            background: #f9f9f9;
-        }
-
-        .image-preview {
-            width: 50px;
-            height: 50px;
-            object-fit: cover;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: transform 0.3s;
-        }
-
-        .image-preview:hover {
-            transform: scale(1.1);
-        }
-
-        tr.tp-stop-loss { background-color: #f4433666 !important; }
-        tr.tp-take-profit { background-color: #4caf507a !important; }
-        tr.tp-break-even { background-color: #ffeb3b6e !important; }
-
-        .stats-container {
-            background: #fff;
-            border-radius: 10px;
-            padding: 15px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        .stats-container h2 {
-            text-align: center;
-            color: #2c3e50;
-            margin-bottom: 15px;
-            font-size: 1.2em;
-        }
-
-        .stats-content {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .stat-box {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .stat-circle {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-            font-weight: bold;
-            color: white;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Cairo', Arial, sans-serif; background: #f1f1f1; line-height: 1.6; font-size: 14px; }
+        .container { background: white; max-width: 1200px; margin: 10px auto; padding: 15px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); min-height: 97vh; display: flex; flex-direction: column; gap: 10px; }
+        h1 { text-align: center; color: #2c3e50; margin: 10px 0; font-size: 1.6em; }
+        #tradeForm { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; padding: 10px; border: 1px solid #eee; border-radius: 8px; }
+        .form-group { display: flex; flex-direction: column; }
+        input, select, textarea { padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; margin-top: 4px; width: 100%; }
+        button { background: #27ae60; color: white; padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; transition: all 0.3s; }
+        button:hover { background: #219a52; transform: translateY(-1px); }
+        .file-input-label { background: #3498db; text-align: center; padding: 10px; border-radius: 6px; cursor: pointer; color: white; transition: all 0.3s; }
+        .file-input-label:hover { background: #2980b9; }
+        .table-container { flex: 1; min-height: 200px; overflow-y: auto; border: 1px solid #eee; border-radius: 8px; }
+        table { width: 100%; border-collapse: collapse; }
+        thead th { position: sticky; top: 0; background: #2c3e50; z-index: 1; }
+        th, td { padding: 12px; text-align: center; border: 1px solid #ddd; font-size: 13px; }
+        th { color: white; font-weight: 600; }
+        tr:nth-child(even) { background: #f9f9f9; }
+        .image-preview { width: 50px; height: 50px; object-fit: cover; border-radius: 6px; cursor: pointer; transition: transform 0.3s; }
+        .image-preview:hover { transform: scale(1.1); }
+        .stats-container { background: #fff; border-radius: 10px; padding: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .stats-container h2 { text-align: center; color: #2c3e50; margin-bottom: 15px; font-size: 1.2em; }
+        .stats-content { display: flex; justify-content: space-around; flex-wrap: wrap; gap: 15px; }
+        .stat-box { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+        .stat-circle { width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: bold; color: white; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .stat-circle.total { background: #3498db; }
         .stat-circle.tp { background: #2ecc71; }
         .stat-circle.be { background: #f1c40f; }
         .stat-circle.sl { background: #e74c3c; }
         .stat-circle.ms { background: #9b59b6; }
-
-        .stat-label {
-            font-size: 13px;
-            color: #666;
-            text-align: center;
-            max-width: 100px;
-        }
-
-        .popup {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.9);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .popup-content {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            position: relative;
-            max-width: 95%;
-            max-height: 90vh;
-        }
-
-        .popup-img {
-            max-width: 100%;
-            max-height: 80vh;
-            border-radius: 4px;
-        }
-
-        .close-btn {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            font-size: 32px;
-            cursor: pointer;
-            color: white;
-            background: #f44336;
-            border: 2px solid #d32f2f;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s;
-        }
-
-        .close-btn:hover {
-            background: #d32f2f;
-            transform: rotate(90deg) scale(1.1);
-        }
-
-        .edit-popup {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            width: 95%;
-            max-width: 500px;
-        }
-
-        .edit-form-group {
-            margin-bottom: 12px;
-        }
-
-        .edit-file-label {
-            display: block;
-            background: #3498db;
-            color: white;
-            padding: 8px;
-            border-radius: 4px;
-            cursor: pointer;
-            margin: 5px 0;
-            font-size: 13px;
-        }
-
-        .tp-sl-select {
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            width: 100%;
-            font-size: 14px;
-            background: #f8f9fa;
-        }
-
-        .date-cell {
-            white-space: nowrap;
-        }
-
+        .stat-label { font-size: 13px; color: #666; text-align: center; max-width: 100px; }
+        .popup { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; justify-content: center; align-items: center; z-index: 1000; }
+        .popup-content { background: white; padding: 20px; border-radius: 10px; position: relative; max-width: 95%; max-height: 90vh; }
+        .popup-img { max-width: 100%; max-height: 80vh; border-radius: 4px; }
+        .close-btn { position: absolute; top: 15px; right: 15px; font-size: 32px; cursor: pointer; color: white; background: #f44336; border: 2px solid #d32f2f; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; transition: all 0.3s; }
+        .close-btn:hover { background: #d32f2f; transform: rotate(90deg) scale(1.1); }
+        .edit-popup { background: white; padding: 20px; border-radius: 10px; width: 95%; max-width: 500px; }
+        .edit-form-group { margin-bottom: 12px; }
+        .edit-file-label { display: block; background: #3498db; color: white; padding: 8px; border-radius: 4px; cursor: pointer; margin: 5px 0; font-size: 13px; }
+        .tp-sl-select { padding: 8px; border: 1px solid #ddd; border-radius: 4px; width: 100%; font-size: 14px; background: #f8f9fa; }
+        .date-cell { white-space: nowrap; }
+        .charts-container { display: flex; flex-wrap: wrap; gap: 20px; justify-content: space-between; margin-top: 20px; }
+        .chart-wrapper { flex: 1 1 calc(50% - 10px); max-width: calc(50% - 10px); min-width: 300px; }
+        canvas { max-width: 100%; margin: 0 auto; }
+        .loss-amount { color: #e74c3c; }
+        .profit-amount { color: #2ecc71; }
+        .strikethrough { text-decoration: line-through; opacity: 0.7; }
+        tr.tp-stop-loss { background-color: #f4433666 !important; }
+        tr.tp-take-profit { background-color: #4caf507a !important; }
+        tr.tp-break-even { background-color: #ffeb3b6e !important; }
+        
         @media (max-width: 768px) {
-            .container {
-                padding: 10px;
-                margin: 5px auto;
-                min-height: 100vh;
-		height: 150vh;
-            }
-
-            #tradeForm {
-                grid-template-columns: 1fr;
-            }
-
-            button {
-                width: 100%;
-                padding: 12px;
-            }
-
-            th, td {
-                padding: 8px;
-                font-size: 12px;
-            }
-
-            .image-preview {
-                width: 40px;
-                height: 40px;
-            }
-
-            .stats-content {
-                flex-direction: row;
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 10px;
-            }
-
-            .stat-box {
-                flex: 1 1 45%;
-                max-width: 150px;
-            }
-
-            .table-container {
-                order: 1;
-                margin-bottom: 15px;
-                height: 60vh;
-            }
-
-            .stats-container {
-                order: 2;
-                height: auto;
-                margin-top: 0;
-            }
-
-            td:nth-child(6), th:nth-child(6) {
-                display: none;
-            }
+            .container { padding: 10px; margin: 5px auto; min-height: 100vh; }
+            #tradeForm { grid-template-columns: 1fr; }
+            button { width: 100%; padding: 12px; }
+            th, td { padding: 8px; font-size: 12px; }
+            .image-preview { width: 40px; height: 40px; }
+            .stats-content { flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 10px; }
+            .stat-box { flex: 1 1 45%; max-width: 150px; }
+            .table-container { order: 1; margin-bottom: 15px; height: 60vh; }
+            .stats-container { order: 2; height: auto; margin-top: 0; }
+            td:nth-child(6), th:nth-child(6) { display: none; }
+            .chart-wrapper { flex: 1 1 100%; max-width: 100%; }
         }
-
         @media (max-width: 480px) {
-            body {
-
-		font-size: 20px;
-            }
-
-            input, select, textarea {
-                padding: 6px 10px;
-                font-size: 13px;
-            }
-
-            .file-input-label {
-                padding: 8px;
-            }
-
-            .stat-circle {
-                width: 50px;
-                height: 50px;
-                font-size: 16px;
-            }
-
-            .stat-label {
-                font-size: 11px;
-            }
-
-            th, td {
-                padding: 6px;
-                font-size: 11px;
-            }
-
-            .image-preview {
-               width: 30px;
-               height: 30px;
-            }
-
-            button {
-                /* padding: 6px;
-                font-size: 11px; */
-            }
-
-            .stat-box {
-                flex: 1 1 100%;
-                max-width: 120px;
-            }
-        }
-
-        .table-container { order: 1; }
-        .stats-container { order: 2; }
-
-        .table-container {
-            height: 60vh;
-        }
-
-        .stats-content {
-            flex-direction: row;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .stat-box {
-            flex: 1 1 100%;
-            max-width: 120px;
+            body { font-size: 16px; }
+            input, select, textarea { padding: 6px 10px; font-size: 13px; }
+            .file-input-label { padding: 8px; }
+            .stat-circle { width: 50px; height: 50px; font-size: 16px; }
+            .stat-label { font-size: 11px; }
+            th, td { padding: 6px; font-size: 11px; }
+            .image-preview { width: 30px; height: 30px; }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>تريدج جورنال ??</h1>
-
+        <h1>تريدج جورنال 📊</h1>
+        
         <form id="tradeForm">
             <div class="form-group">
                 <label>الزوج المالي:</label>
@@ -422,12 +94,10 @@
                     <option value="USDJPY">USDJPY</option>
                 </select>
             </div>
-
             <div class="form-group">
                 <label>إسم مخصص:</label>
                 <input type="text" id="customSymbol" placeholder="أدخل اسم زوج مخصص">
             </div>
-
             <div class="form-group">
                 <label>نوع الصفقة:</label>
                 <select id="action">
@@ -435,7 +105,6 @@
                     <option value="SELL">بيع</option>
                 </select>
             </div>
-
             <div class="form-group">
                 <label>الجلسة:</label>
                 <select id="session">
@@ -447,25 +116,29 @@
                     <option value="Outside Liquidity">Outside Liquidity</option>
                 </select>
             </div>
-
             <div class="form-group">
                 <label>التفاصيل:</label>
                 <textarea id="details" rows="3"></textarea>
             </div>
-
+            <div class="form-group">
+                <label>الخسارة:</label>
+                <input type="number" id="loss" step="0.01" placeholder="أدخل المبلغ" class="loss-amount">
+            </div>
+            <div class="form-group">
+                <label>الربح:</label>
+                <input type="number" id="profit" step="0.01" placeholder="أدخل المبلغ" class="profit-amount">
+            </div>
             <div class="form-group">
                 <label>صورة قبل الدخول:</label>
                 <input type="file" id="beforeImage" accept="image/*" hidden>
                 <label for="beforeImage" class="file-input-label">اختر صورة</label>
             </div>
-
             <div class="form-group">
                 <label>صورة بعد الدخول:</label>
                 <input type="file" id="afterImage" accept="image/*" hidden>
                 <label for="afterImage" class="file-input-label">اختر صورة</label>
             </div>
-
-            <button type="submit">إضافة صفقة ?</button>
+            <button type="submit">إضافة صفقة ➕</button>
         </form>
 
         <div class="table-container">
@@ -478,6 +151,8 @@
                         <th>التفاصيل</th>
                         <th>الجلسة</th>
                         <th>TP/SL</th>
+                        <th>الخسارة</th>
+                        <th>الربح</th>
                         <th>قبل الدخول</th>
                         <th>بعد الدخول</th>
                         <th>الإجراءات</th>
@@ -487,49 +162,43 @@
             </table>
         </div>
 
-    </div>
-    <div class="Statistics">
-
-<div class="container">
-  <!-- ---------------------------------------------------------------------------- -->
-          <div class="stats-container">
-              <h2>الإحصائيات</h2>
-              <div class="stats-content">
-                  <div class="stat-box">
-                      <div class="stat-circle total">
-                          <div class="stat-value" id="totalTrades">0</div>
-                      </div>
-                      <div class="stat-label">إجمالي الصفقات</div>
-                  </div>
-                  <div class="stat-box">
-                      <div class="stat-circle tp">
-                          <div class="stat-value" id="tpCount">0</div>
-                      </div>
-                      <div class="stat-label">Take Profit</div>
-                  </div>
-                  <div class="stat-box">
-                      <div class="stat-circle be">
-                          <div class="stat-value" id="beCount">0</div>
-                      </div>
-                      <div class="stat-label">Break Even</div>
-                  </div>
-                  <div class="stat-box">
-                      <div class="stat-circle sl">
-                          <div class="stat-value" id="slCount">0</div>
-                      </div>
-                      <div class="stat-label">Stop Loss</div>
-                  </div>
-                  <div class="stat-box">
-                      <div class="stat-circle ms">
-                          <div class="stat-value" id="msCount">0</div>
-                      </div>
-                      <div class="stat-label">Manual Shutdown</div>
-                  </div>
-              </div>
-          </div>
-          <!-- ---------------------------------------- -->
+        <div class="stats-container">
+            <h2>الإحصائيات</h2>
+            <div class="stats-content">
+                <div class="stat-box">
+                    <div class="stat-circle total"><div class="stat-value" id="totalTrades">0</div></div>
+                    <div class="stat-label">إجمالي الصفقات</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-circle tp"><div class="stat-value" id="tpCount">0</div></div>
+                    <div class="stat-label">Take Profit</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-circle be"><div class="stat-value" id="beCount">0</div></div>
+                    <div class="stat-label">Break Even</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-circle sl"><div class="stat-value" id="slCount">0</div></div>
+                    <div class="stat-label">Stop Loss</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-circle ms"><div class="stat-value" id="msCount">0</div></div>
+                    <div class="stat-label">Manual Shutdown</div>
+                </div>
+            </div>
         </div>
-</div>
+
+        <div class="stats-container">
+            <h2>الإحصائيات حسب الأيام والجلسات</h2>
+            <div class="charts-container">
+                <div class="chart-wrapper"><canvas id="dailyChart"></canvas></div>
+                <div class="chart-wrapper"><canvas id="sessionChart"></canvas></div>
+                <div class="chart-wrapper"><canvas id="dayOfWeekChart"></canvas></div>
+                <div class="chart-wrapper"><canvas id="weeklySessionChart"></canvas></div>
+            </div>
+        </div>
+    </div>
+
     <div class="popup" id="imagePopup">
         <div class="popup-content">
             <span class="close-btn" onclick="closePopup()">×</span>
@@ -549,6 +218,17 @@
     </div>
 
     <script>
+        let dailyChart, dayOfWeekChart, sessionChart, weeklySessionChart;
+        let trades = JSON.parse(localStorage.getItem('trades') || '[]').map(trade => ({
+            ...trade,
+            tp_sl: trade.tp_sl || 'Nothing',
+            session: trade.session || 'Nothing',
+            date: trade.date || getCurrentDate(),
+            loss: typeof trade.loss === 'number' ? trade.loss : null,
+            profit: typeof trade.profit === 'number' ? trade.profit : null
+        }));
+        let currentEditIndex = null;
+
         function getCurrentDate() {
             const days = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
             const date = new Date();
@@ -557,15 +237,6 @@
                 fullDate: date.toLocaleDateString('ar-EG')
             };
         }
-
-        let trades = JSON.parse(localStorage.getItem('trades') || '[]').map(trade => ({
-            ...trade,
-            tp_sl: trade.tp_sl || 'Nothing',
-            session: trade.session || 'Nothing',
-            date: trade.date || getCurrentDate()
-        }));
-
-        let currentEditIndex = null;
 
         async function handleFile(file) {
             if (!file) return null;
@@ -590,6 +261,142 @@
             document.getElementById('beCount').textContent = stats.be;
             document.getElementById('slCount').textContent = stats.sl;
             document.getElementById('msCount').textContent = stats.ms;
+
+            updateCharts();
+        }
+
+        function prepareDailyStats() {
+            const dayStats = {};
+            const dayOfWeekStats = {
+                'الأحد': { tp: 0, sl: 0, be: 0, ms: 0 },
+                'الاثنين': { tp: 0, sl: 0, be: 0, ms: 0 },
+                'الثلاثاء': { tp: 0, sl: 0, be: 0, ms: 0 },
+                'الأربعاء': { tp: 0, sl: 0, be: 0, ms: 0 },
+                'الخميس': { tp: 0, sl: 0, be: 0, ms: 0 },
+                'الجمعة': { tp: 0, sl: 0, be: 0, ms: 0 },
+                'السبت': { tp: 0, sl: 0, be: 0, ms: 0 }
+            };
+
+            trades.forEach(trade => {
+                const dateKey = trade.date.fullDate;
+                if (!dayStats[dateKey]) dayStats[dateKey] = { tp: 0, sl: 0, be: 0, ms: 0 };
+                const dayName = trade.date.dayName;
+
+                switch(trade.tp_sl) {
+                    case 'Take Profit': dayStats[dateKey].tp++; dayOfWeekStats[dayName].tp++; break;
+                    case 'Stop Loss': dayStats[dateKey].sl++; dayOfWeekStats[dayName].sl++; break;
+                    case 'Break Even': dayStats[dateKey].be++; dayOfWeekStats[dayName].be++; break;
+                    case 'Manual Shutdown': dayStats[dateKey].ms++; dayOfWeekStats[dayName].ms++; break;
+                }
+            });
+
+            return { dayStats, dayOfWeekStats };
+        }
+
+        function prepareSessionStats() {
+            const sessionStats = {
+                'New York': { tp: 0, sl: 0, be: 0, ms: 0 },
+                'London': { tp: 0, sl: 0, be: 0, ms: 0 },
+                'Asia': { tp: 0, sl: 0, be: 0, ms: 0 },
+                'London Close': { tp: 0, sl: 0, be: 0, ms: 0 },
+                'Outside Liquidity': { tp: 0, sl: 0, be: 0, ms: 0 },
+                'Nothing': { tp: 0, sl: 0, be: 0, ms: 0 }
+            };
+
+            trades.forEach(trade => {
+                const session = trade.session || 'Nothing';
+                switch(trade.tp_sl) {
+                    case 'Take Profit': sessionStats[session].tp++; break;
+                    case 'Stop Loss': sessionStats[session].sl++; break;
+                    case 'Break Even': sessionStats[session].be++; break;
+                    case 'Manual Shutdown': sessionStats[session].ms++; break;
+                }
+            });
+
+            return sessionStats;
+        }
+
+        function updateCharts() {
+            const { dayStats, dayOfWeekStats } = prepareDailyStats();
+            const sessionStats = prepareSessionStats();
+            const dates = Object.keys(dayStats).reverse();
+            const sessions = Object.keys(sessionStats);
+
+            [dailyChart, dayOfWeekChart, sessionChart, weeklySessionChart].forEach(chart => {
+                if (chart) chart.destroy();
+            });
+
+            const ctx1 = document.getElementById('dailyChart').getContext('2d');
+            dailyChart = new Chart(ctx1, {
+                type: 'bar',
+                data: {
+                    labels: dates,
+                    datasets: [
+                        { label: 'Take Profit', data: dates.map(date => dayStats[date].tp), backgroundColor: '#2ecc71' },
+                        { label: 'Stop Loss', data: dates.map(date => dayStats[date].sl), backgroundColor: '#e74c3c' },
+                        { label: 'Break Even', data: dates.map(date => dayStats[date].be), backgroundColor: '#f1c40f' },
+                        { label: 'Manual Shutdown', data: dates.map(date => dayStats[date].ms), backgroundColor: '#9b59b6' }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { title: { display: true, text: 'التوزيع اليومي للصفقات' } },
+                    scales: { x: { stacked: true }, y: { stacked: true, beginAtZero: true } }
+                }
+            });
+
+            const ctx2 = document.getElementById('dayOfWeekChart').getContext('2d');
+            dayOfWeekChart = new Chart(ctx2, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(dayOfWeekStats),
+                    datasets: [{
+                        label: 'إجمالي الصفقات',
+                        data: Object.values(dayOfWeekStats).map(day => day.tp + day.sl + day.be + day.ms),
+                        backgroundColor: ['#3498db', '#2ecc71', '#e74c3c', '#f1c40f', '#9b59b6', '#1abc9c', '#e67e22']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { title: { display: true, text: 'التوزيع حسب أيام الأسبوع' }, legend: { position: 'bottom' } }
+                }
+            });
+
+            const ctx3 = document.getElementById('sessionChart').getContext('2d');
+            sessionChart = new Chart(ctx3, {
+                type: 'bar',
+                data: {
+                    labels: sessions,
+                    datasets: [
+                        { label: 'Take Profit', data: sessions.map(s => sessionStats[s].tp), backgroundColor: '#2ecc71' },
+                        { label: 'Stop Loss', data: sessions.map(s => sessionStats[s].sl), backgroundColor: '#e74c3c' },
+                        { label: 'Break Even', data: sessions.map(s => sessionStats[s].be), backgroundColor: '#f1c40f' },
+                        { label: 'Manual Shutdown', data: sessions.map(s => sessionStats[s].ms), backgroundColor: '#9b59b6' }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { title: { display: true, text: 'التوزيع حسب الجلسات' } },
+                    scales: { x: { stacked: true }, y: { stacked: true, beginAtZero: true } }
+                }
+            });
+
+            const ctx4 = document.getElementById('weeklySessionChart').getContext('2d');
+            weeklySessionChart = new Chart(ctx4, {
+                type: 'doughnut',
+                data: {
+                    labels: sessions,
+                    datasets: [{
+                        label: 'إجمالي الصفقات',
+                        data: sessions.map(s => sessionStats[s].tp + sessionStats[s].sl + sessionStats[s].be + sessionStats[s].ms),
+                        backgroundColor: ['#3498db', '#2ecc71', '#e74c3c', '#f1c40f', '#9b59b6', '#1abc9c']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { title: { display: true, text: 'التوزيع الأسبوعي حسب الجلسات' }, legend: { position: 'bottom' } }
+                }
+            });
         }
 
         function loadTrades() {
@@ -599,18 +406,35 @@
             trades.forEach((trade, index) => {
                 const row = document.createElement('tr');
                 row.dataset.index = index;
+                
+                if (trade.tp_sl === 'Stop Loss') row.classList.add('tp-stop-loss');
+                else if (trade.tp_sl === 'Take Profit') row.classList.add('tp-take-profit');
+                else if (trade.tp_sl === 'Break Even') row.classList.add('tp-break-even');
 
-                if(trade.tp_sl === 'Stop Loss') row.classList.add('tp-stop-loss');
-                else if(trade.tp_sl === 'Take Profit') row.classList.add('tp-take-profit');
-                else if(trade.tp_sl === 'Break Even') row.classList.add('tp-break-even');
+                const lossValue = trade.loss !== null ? `-$${Math.abs(trade.loss).toFixed(2)}` : '';
+                const profitValue = trade.profit !== null ? `+$${trade.profit.toFixed(2)}` : '';
+
+                let lossClass = 'loss-amount';
+                let profitClass = 'profit-amount';
+                
+                if (trade.tp_sl === 'Take Profit') {
+                    lossClass += ' strikethrough';
+                } else if (trade.tp_sl === 'Stop Loss') {
+                    profitClass += ' strikethrough';
+                } else if (trade.tp_sl === 'Break Even') {
+                    lossClass += ' strikethrough';
+                    profitClass += ' strikethrough';
+                }
 
                 row.innerHTML = `
                     <td class="date-cell">${trade.date.dayName}<br>${trade.date.fullDate}</td>
                     <td>${trade.symbol}</td>
-                    <td>${trade.action}</td>
+                    <td>${trade.action === 'BUY' ? 'شراء' : 'بيع'}</td>
                     <td>${trade.details}</td>
                     <td>${trade.session}</td>
                     <td>${trade.tp_sl}</td>
+                    <td class="${lossClass}">${lossValue}</td>
+                    <td class="${profitClass}">${profitValue}</td>
                     <td>${trade.before ? `<img src="${trade.before}" class="image-preview">` : 'لا يوجد'}</td>
                     <td>${trade.after ? `<img src="${trade.after}" class="image-preview">` : 'لا يوجد'}</td>
                     <td>
@@ -620,13 +444,14 @@
                 `;
                 tbody.appendChild(row);
             });
+
             updateStats();
         }
 
         function deleteTrade(index) {
-            if(confirm('هل أنت متأكد من حذف هذه الصفقة؟')) {
+            if (confirm('هل أنت متأكد من حذف هذه الصفقة؟')) {
                 trades.splice(index, 1);
-                saveData();
+                localStorage.setItem('trades', JSON.stringify(trades));
                 loadTrades();
             }
         }
@@ -635,13 +460,12 @@
             currentEditIndex = index;
             const trade = trades[index];
             const form = document.getElementById('editForm');
-
+            
             form.innerHTML = `
                 <div class="edit-form-group">
                     <label>الزوج المالي:</label>
                     <input type="text" id="editSymbol" value="${trade.symbol}">
                 </div>
-
                 <div class="edit-form-group">
                     <label>نوع الصفقة:</label>
                     <select id="editAction">
@@ -649,7 +473,6 @@
                         <option ${trade.action === 'SELL' ? 'selected' : ''} value="SELL">بيع</option>
                     </select>
                 </div>
-
                 <div class="edit-form-group">
                     <label>الجلسة:</label>
                     <select id="editSession">
@@ -661,12 +484,10 @@
                         <option ${trade.session === 'Outside Liquidity' ? 'selected' : ''} value="Outside Liquidity">Outside Liquidity</option>
                     </select>
                 </div>
-
                 <div class="edit-form-group">
                     <label>التفاصيل:</label>
                     <textarea id="editDetails">${trade.details}</textarea>
                 </div>
-
                 <div class="edit-form-group">
                     <label>إدارة الصفقة:</label>
                     <select class="tp-sl-select" id="editTpSl">
@@ -677,14 +498,20 @@
                         <option ${trade.tp_sl === 'Manual Shutdown' ? 'selected' : ''} value="Manual Shutdown">Manual Shutdown</option>
                     </select>
                 </div>
-
+                <div class="edit-form-group">
+                    <label>الخسارة:</label>
+                    <input type="number" id="editLoss" step="0.01" value="${trade.loss !== null ? Math.abs(trade.loss) : ''}" class="loss-amount">
+                </div>
+                <div class="edit-form-group">
+                    <label>الربح:</label>
+                    <input type="number" id="editProfit" step="0.01" value="${trade.profit !== null ? trade.profit : ''}" class="profit-amount">
+                </div>
                 <div class="edit-form-group">
                     <label>صورة قبل الدخول:</label>
                     <input type="file" id="editBeforeImage" accept="image/*" hidden>
                     <label for="editBeforeImage" class="edit-file-label">تغيير الصورة</label>
                     ${trade.before ? `<img src="${trade.before}" class="image-preview" width="50">` : ''}
                 </div>
-
                 <div class="edit-form-group">
                     <label>صورة بعد الدخول:</label>
                     <input type="file" id="editAfterImage" accept="image/*" hidden>
@@ -698,65 +525,56 @@
 
         async function saveEdit() {
             const trade = trades[currentEditIndex];
-
             trade.symbol = document.getElementById('editSymbol').value;
             trade.action = document.getElementById('editAction').value;
             trade.session = document.getElementById('editSession').value;
             trade.details = document.getElementById('editDetails').value;
             trade.tp_sl = document.getElementById('editTpSl').value;
 
+            const lossInput = document.getElementById('editLoss').value;
+            const profitInput = document.getElementById('editProfit').value;
+            trade.loss = lossInput ? -Math.abs(parseFloat(lossInput)) : null;
+            trade.profit = profitInput ? Math.abs(parseFloat(profitInput)) : null;
+
             const newBefore = await handleFile(document.getElementById('editBeforeImage').files[0]);
             const newAfter = await handleFile(document.getElementById('editAfterImage').files[0]);
-
             if (newBefore) trade.before = newBefore;
             if (newAfter) trade.after = newAfter;
 
-            saveData();
+            localStorage.setItem('trades', JSON.stringify(trades));
             loadTrades();
             closeEditPopup();
-        }
-
-        function saveData() {
-            localStorage.setItem('trades', JSON.stringify(trades));
-        }
-
-        document.getElementById('tradeForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            const symbol = document.getElementById('customSymbol').value || document.getElementById('symbol').value;
-            const action = document.getElementById('action').value;
-            const details = document.getElementById('details').value;
-            const session = document.getElementById('session').value;
-
-            const beforeFile = document.getElementById('beforeImage').files[0];
-            const afterFile = document.getElementById('afterImage').files[0];
-
-            const newTrade = {
-                symbol,
-                action,
-                details,
-                session,
-                tp_sl: 'Nothing',
-                date: getCurrentDate(),
-                before: await handleFile(beforeFile),
-                after: await handleFile(afterFile)
-            };
-
-            trades.push(newTrade);
-            saveData();
-            loadTrades();
-            e.target.reset();
-        });
-
-        function closePopup() {
-            document.getElementById('imagePopup').style.display = 'none';
         }
 
         function closeEditPopup() {
             document.getElementById('editPopup').style.display = 'none';
         }
 
-        loadTrades();
+        function closePopup() {
+            document.getElementById('imagePopup').style.display = 'none';
+        }
+
+        document.getElementById('tradeForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const newTrade = {
+                symbol: document.getElementById('customSymbol').value || document.getElementById('symbol').value,
+                action: document.getElementById('action').value,
+                details: document.getElementById('details').value,
+                session: document.getElementById('session').value,
+                tp_sl: 'Nothing',
+                date: getCurrentDate(),
+                before: await handleFile(document.getElementById('beforeImage').files[0]),
+                after: await handleFile(document.getElementById('afterImage').files[0]),
+                loss: document.getElementById('loss').value ? -Math.abs(parseFloat(document.getElementById('loss').value)) : null,
+                profit: document.getElementById('profit').value ? Math.abs(parseFloat(document.getElementById('profit').value)) : null
+            };
+
+            trades.push(newTrade);
+            localStorage.setItem('trades', JSON.stringify(trades));
+            loadTrades();
+            e.target.reset();
+        });
 
         document.querySelector('#tradeTable').addEventListener('click', (e) => {
             if (e.target.classList.contains('image-preview')) {
@@ -764,6 +582,8 @@
                 document.getElementById('imagePopup').style.display = 'flex';
             }
         });
+
+        loadTrades();
     </script>
 </body>
 </html>
